@@ -1,0 +1,16 @@
+2026-06-27 22:18:24,346 [INFO] main: Drone-recon стартує...
+2026-06-27 22:18:24,380 [INFO] bot.client: Handlers налаштовано
+2026-06-27 22:18:24,381 [INFO] main: Polling запущено
+2026-06-27 22:18:27,391 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot8674217134:AAHqK-sd2SLm7ezuMvdLI9d1m658kRXvFHY/getMe "HTTP/1.1 200 OK"
+2026-06-27 22:18:27,437 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot8674217134:AAHqK-sd2SLm7ezuMvdLI9d1m658kRXvFHY/deleteWebhook "HTTP/1.1 200 OK"
+2026-06-27 22:18:27,439 [INFO] telegram.ext.Application: Application started
+2026-06-27 22:18:47,554 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot8674217134:AAHqK-sd2SLm7ezuMvdLI9d1m658kRXvFHY/getUpdates "HTTP/1.1 200 OK"
+2026-06-27 22:18:50,969 [ERROR] asyncio: Task was destroyed but it is pending!
+task: <Task pending name='Updater:start_polling:polling_task' coro=<network_retry_loop() done, defined at /home/sashok/.openclaw/workspace/drone-recon/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py:44> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[Task.task_wakeup()]>
+2026-06-27 22:18:50,971 [ERROR] asyncio: Task was destroyed but it is pending!
+task: <Task pending name='Application:8674217134:update_fetcher' coro=<Application._update_fetcher() done, defined at /home/sashok/.openclaw/workspace/drone-recon/venv/lib/python3.14/site-packages/telegram/ext/_application.py:1231> wait_for=<Future cancelled>>
+2026-06-27 22:19:45,296 [INFO] main: Drone-recon стартує...
+2026-06-27 22:19:45,330 [INFO] bot.client: Handlers налаштовано
+2026-06-27 22:19:45,330 [INFO] main: Polling запущено
+2026-06-27 22:19:45,523 [INFO] telegram.ext.Application: Application started
+2026-06-27 22:21:36,300 [INFO] bot.client: Saved photo: /home/sashok/.openclaw/workspace/drone-recon/data/input/photo_20260627_222136.jpg
