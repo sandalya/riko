@@ -2,10 +2,11 @@
 import logging
 import sys
 from telegram.ext import Application
-from core.config import BOT_TOKEN, LOGS_DIR, DATA_INPUT_DIR
+from core.config import BOT_TOKEN, LOGS_DIR, DATA_INPUT_DIR, DATA_OUTPUT_DIR
 
 LOGS_DIR.mkdir(exist_ok=True)
 DATA_INPUT_DIR.mkdir(parents=True, exist_ok=True)
+DATA_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,

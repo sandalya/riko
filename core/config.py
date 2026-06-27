@@ -7,6 +7,8 @@ BASE_DIR = Path(__file__).parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+DETECTOR_URL = os.getenv("DETECTOR_URL", "http://localhost:8000")
 
 LOGS_DIR = BASE_DIR / "logs"
 DATA_INPUT_DIR = BASE_DIR / "data" / "input"
+DATA_OUTPUT_DIR = BASE_DIR / "data" / "output"

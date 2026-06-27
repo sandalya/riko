@@ -5,16 +5,19 @@ updated: 2026-06-27
 # HOT
 
 ## Now
-Phase 0 complete: dependencies installed, yolo11n.pt downloaded, /detect endpoint live and tested on real photo.
+Bot wired to detector: video/photo → detector → JSON back to Telegram. Verified end-to-end.
 
 ## Last done
-- Installed detector dependencies (ultralytics, fastapi, uvicorn)
-- Downloaded yolo11n.pt model into detector/models/
-- Implemented POST /detect endpoint in detector/main.py
-- Tested endpoint on sample image from data/input — inference working
+- Verified Phase 0: /detect returns real inference (bus 94%, 4 persons on test image)
+- Added DETECTOR_URL + DATA_OUTPUT_DIR to core/config.py
+- Rewrote bot/client.py: handle_video → /detect_video → sends JSON file back
+- Rewrote bot/client.py: handle_photo → /detect → sends JSON file back
+- Integration tested: bot→detector→JSON pipeline works
+- Bot starts cleanly, all handlers connected
 
 ## Next
-Phase 2: Build MCP Server with 4 tools (detect_objects, analyze_video, parse_gps_log, correlate_detections_gps).
+Live test: start bot + detector, send real video via Telegram, get JSON back.
+Then: Phase 2 — MCP Server (detect_objects, analyze_video, parse_gps_log, correlate_detections_gps).
 
 ## Phase Status
 
@@ -22,14 +25,17 @@ Phase 2: Build MCP Server with 4 tools (detect_objects, analyze_video, parse_gps
 |-------|-------|--------|
 | **Phase 0** | Folder structure + Detector `/detect` endpoint + git | ✅ Done |
 | **Phase 1** | CLAUDE.md refined, CC configured | ✅ Done |
-| **Phase 2** | MCP Server + 4 tools | 🟡 In progress |
+| **Bot→Detector** | video/photo in TG → JSON detections back | ✅ Done |
+| **Phase 2** | MCP Server + 4 tools | ⬜ Pending |
 | **Phase 3** | Claude Agent + report generation | ⬜ Pending |
-| **Phase 4** | Web/Telegram output + GPS Level 1 + deploy | ⬜ Pending |
+| **Phase 4** | GPS Level 1 + deploy | ⬜ Pending |
 
 ## Architecture Reminder (3 blocks)
 
 ```
 [Input] → [Detector/FastAPI] → [MCP Server] → [Claude Agent] → [Report]
+                    ↑
+              [Telegram Bot] (wired directly for basic CV output)
 ```
 
 - Model swap: change only `detector/config.py → MODEL_PATH`
@@ -49,6 +55,6 @@ None.
 
 ## Reminders
 
-- Phase 0 unlocked Phase 2 (MCP server design) — detector inference stable
-- Fine-tune on drone dataset later; COCO model ready for integration testing
-- uvicorn running on port 8000 in background
+- Detector running on port 8000, uvicorn in background
+- Bot requires `venv/bin/python3 main.py` from project root
+- Both must run simultaneously for end-to-end to work
