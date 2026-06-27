@@ -14,3 +14,21 @@ task: <Task pending name='Application:8674217134:update_fetcher' coro=<Applicati
 2026-06-27 22:19:45,330 [INFO] main: Polling запущено
 2026-06-27 22:19:45,523 [INFO] telegram.ext.Application: Application started
 2026-06-27 22:21:36,300 [INFO] bot.client: Saved photo: /home/sashok/.openclaw/workspace/drone-recon/data/input/photo_20260627_222136.jpg
+2026-06-27 23:36:07,837 [INFO] main: Drone-recon стартує...
+2026-06-27 23:36:07,874 [INFO] bot.client: Handlers налаштовано
+2026-06-27 23:36:07,874 [INFO] main: Polling запущено
+2026-06-27 23:36:08,051 [INFO] telegram.ext.Application: Application started
+2026-06-27 23:36:13,853 [INFO] telegram.ext.Application: Application is stopping. This might take a moment.
+2026-06-27 23:36:13,853 [INFO] telegram.ext.Application: Application.stop() complete
+2026-06-27 23:36:17,386 [INFO] main: Drone-recon стартує...
+2026-06-27 23:36:17,424 [INFO] bot.client: Handlers налаштовано
+2026-06-27 23:36:17,424 [INFO] main: Polling запущено
+2026-06-27 23:36:17,621 [INFO] telegram.ext.Application: Application started
+2026-06-27 23:36:26,405 [INFO] telegram.ext.Application: Application is stopping. This might take a moment.
+2026-06-27 23:36:26,405 [INFO] telegram.ext.Application: Application.stop() complete
+2026-06-27 23:40:45,050 [INFO] main: Drone-recon стартує...
+2026-06-27 23:40:45,087 [INFO] bot.client: Handlers налаштовано
+2026-06-27 23:40:45,087 [INFO] main: Polling запущено
+2026-06-27 23:40:45,267 [INFO] telegram.ext.Application: Application started
+2026-06-27 23:41:03,301 [INFO] bot.client: Saved photo: /home/sashok/.openclaw/workspace/drone-recon/data/input/photo_20260627_234103.jpg
+2026-06-27 23:41:03,524 [INFO] bot.client: Sent detections: /home/sashok/.openclaw/workspace/drone-recon/data/output/photo_20260627_234103_detections.json
