@@ -15,6 +15,7 @@ logging.basicConfig(
         logging.StreamHandler(),
     ],
 )
+logging.getLogger("httpx").setLevel(logging.WARNING)
 log = logging.getLogger("main")
 
 
