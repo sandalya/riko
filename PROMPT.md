@@ -1,4 +1,4 @@
 Проект: drone-recon
-Стан: Telegram бот готовий, отримує медіа та зберігає в data/input з міткою часу.
-Далі: Встановити залежності детектора та протестувати інференс.
-Поділись HOT.md + WARM.md.
+Стан: CLAUDE.md та HOT.md оновлені з повною архітектурою. Telegram bot готовий, detector skeleton є.
+Далі: Встановити deps ultralytics+fastapi, реалізувати /detect endpoint, протестувати на фото з data/input.
+Поділись HOT.md + WARM.md на початку наступної сесії.

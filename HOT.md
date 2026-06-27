@@ -5,11 +5,19 @@ updated: 2026-06-27
 # HOT
 
 ## Now
+CLAUDE.md and HOT.md updated with full project context from SPEC.
 
-Detector Service is next. Telegram bot is done (receives media → `data/input`).  
-Goal: get `POST /detect` working on a test image end-to-end.
+## Last done
+- CLAUDE.md created with complete project architecture and phase breakdown
+- HOT.md updated with phase status table and full context
+- Reviewed bot receiver (working), detector skeleton, and git+checkpoint setup
 
----
+## Next
+1. Install detector dependencies (`pip install ultralytics fastapi uvicorn`)
+2. Add `detector/config.py` with `MODEL_PATH = "models/yolo11n.pt"`
+3. Download `yolo11n.pt` into `detector/models/`
+4. Implement `POST /detect` endpoint in `detector/main.py`
+5. Test on a sample image from `data/input`
 
 ## Phase Status
 
@@ -21,26 +29,6 @@ Goal: get `POST /detect` working on a test image end-to-end.
 | **Phase 3** | Claude Agent + report generation | ⬜ Pending |
 | **Phase 4** | Web/Telegram output + GPS Level 1 + deploy | ⬜ Pending |
 
----
-
-## Last Done
-
-- `bot/client.py` — Telegram receiver, saves photo/video/doc to `data/input` with timestamps
-- `detector/main.py` — FastAPI skeleton added
-- CLAUDE.md and HOT.md updated with full architecture from SPEC
-
----
-
-## Next
-
-1. Install detector dependencies (`pip install ultralytics fastapi uvicorn`)
-2. Add `detector/config.py` with `MODEL_PATH = "models/yolo11n.pt"`
-3. Download `yolo11n.pt` into `detector/models/`
-4. Implement `POST /detect` endpoint in `detector/main.py`
-5. Test on a sample image from `data/input`
-
----
-
 ## Architecture Reminder (3 blocks)
 
 ```
@@ -50,8 +38,6 @@ Goal: get `POST /detect` working on a test image end-to-end.
 - Model swap: change only `detector/config.py → MODEL_PATH`
 - Geolocation PoC: GPS timestamp correlation (Level 1)
 - MCP tools: `detect_objects`, `analyze_video`, `parse_gps_log`, `correlate_detections_gps`
-
----
 
 ## Blockers
 
@@ -64,6 +50,7 @@ None.
 - Final output: Telegram bot or web UI?
 - Deploy: VPS or Beelink + tunnel?
 
-## Active Branches
+## Reminders
 
-None.
+- Detector inference is next critical milestone — install deps and test on real photo from `data/input`
+- Phase 0 completion unblocks Phase 1 (MCP server design)
