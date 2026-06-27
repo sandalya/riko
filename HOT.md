@@ -5,27 +5,24 @@ updated: 2026-06-27
 # HOT
 
 ## Now
-CLAUDE.md and HOT.md updated with full project context from SPEC.
+Phase 0 complete: dependencies installed, yolo11n.pt downloaded, /detect endpoint live and tested on real photo.
 
 ## Last done
-- CLAUDE.md created with complete project architecture and phase breakdown
-- HOT.md updated with phase status table and full context
-- Reviewed bot receiver (working), detector skeleton, and git+checkpoint setup
+- Installed detector dependencies (ultralytics, fastapi, uvicorn)
+- Downloaded yolo11n.pt model into detector/models/
+- Implemented POST /detect endpoint in detector/main.py
+- Tested endpoint on sample image from data/input — inference working
 
 ## Next
-1. Install detector dependencies (`pip install ultralytics fastapi uvicorn`)
-2. Add `detector/config.py` with `MODEL_PATH = "models/yolo11n.pt"`
-3. Download `yolo11n.pt` into `detector/models/`
-4. Implement `POST /detect` endpoint in `detector/main.py`
-5. Test on a sample image from `data/input`
+Phase 2: Build MCP Server with 4 tools (detect_objects, analyze_video, parse_gps_log, correlate_detections_gps).
 
 ## Phase Status
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| **Phase 0** | Folder structure + Detector `/detect` endpoint + git | 🟡 In progress |
+| **Phase 0** | Folder structure + Detector `/detect` endpoint + git | ✅ Done |
 | **Phase 1** | CLAUDE.md refined, CC configured | ✅ Done |
-| **Phase 2** | MCP Server + 4 tools | ⬜ Pending |
+| **Phase 2** | MCP Server + 4 tools | 🟡 In progress |
 | **Phase 3** | Claude Agent + report generation | ⬜ Pending |
 | **Phase 4** | Web/Telegram output + GPS Level 1 + deploy | ⬜ Pending |
 
@@ -52,5 +49,6 @@ None.
 
 ## Reminders
 
-- Detector inference is next critical milestone — install deps and test on real photo from `data/input`
-- Phase 0 completion unblocks Phase 1 (MCP server design)
+- Phase 0 unlocked Phase 2 (MCP server design) — detector inference stable
+- Fine-tune on drone dataset later; COCO model ready for integration testing
+- uvicorn running on port 8000 in background
