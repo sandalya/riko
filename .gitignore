@@ -1,4 +1,4 @@
-logs/
+logs/*.log
 data/input/
 data/output/
 **/__pycache__/
