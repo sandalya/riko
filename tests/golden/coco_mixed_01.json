@@ -1,0 +1,45 @@
+{
+  "image_path": "/home/sashok/.openclaw/workspace/drone-recon/tests/fixtures/images/coco_mixed_01.jpg",
+  "detections": [
+    {
+      "cls": "person",
+      "confidence": 0.9362,
+      "bbox": [
+        3.16,
+        168.28,
+        131.24,
+        395.9
+      ]
+    },
+    {
+      "cls": "person",
+      "confidence": 0.9088,
+      "bbox": [
+        508.53,
+        172.54,
+        634.21,
+        384.96
+      ]
+    },
+    {
+      "cls": "person",
+      "confidence": 0.8981,
+      "bbox": [
+        325.02,
+        170.29,
+        395.92,
+        371.81
+      ]
+    },
+    {
+      "cls": "umbrella",
+      "confidence": 0.6255,
+      "bbox": [
+        559.37,
+        89.59,
+        639.75,
+        153.34
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "image_path": "/home/sashok/.openclaw/workspace/drone-recon/tests/fixtures/images/coco_person_01.jpg",
+  "detections": [
+    {
+      "cls": "person",
+      "confidence": 0.9126,
+      "bbox": [
+        385.33,
+        69.24,
+        498.92,
+        348.92
+      ]
+    },
+    {
+      "cls": "bowl",
+      "confidence": 0.7191,
+      "bbox": [
+        32.65,
+        342.12,
+        100.16,
+        384.93
+      ]
+    },
+    {
+      "cls": "bowl",
+      "confidence": 0.7013,
+      "bbox": [
+        155.02,
+        168.67,
+        182.38,
+        184.18
+      ]
+    },
+    {
+      "cls": "oven",
+      "confidence": 0.6868,
+      "bbox": [
+        0.11,
+        187.54,
+        195.96,
+        292.81
+      ]
+    },
+    {
+      "cls": "oven",
+      "confidence": 0.6343,
+      "bbox": [
+        489.09,
+        200.73,
+        617.81,
+        344.88
+      ]
+    },
+    {
+      "cls": "person",
+      "confidence": 0.6109,
+      "bbox": [
+        0.12,
+        263.18,
+        61.55,
+        310.78
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "image_path": "/home/sashok/.openclaw/workspace/drone-recon/tests/fixtures/images/coco_person_02.jpg",
+  "detections": [
+    {
+      "cls": "person",
+      "confidence": 0.833,
+      "bbox": [
+        345.11,
+        164.91,
+        421.88,
+        358.85
+      ]
+    },
+    {
+      "cls": "person",
+      "confidence": 0.8033,
+      "bbox": [
+        254.96,
+        224.21,
+        305.81,
+        317.7
+      ]
+    },
+    {
+      "cls": "skateboard",
+      "confidence": 0.757,
+      "bbox": [
+        303.13,
+        318.47,
+        362.09,
+        363.2
+      ]
+    },
+    {
+      "cls": "bicycle",
+      "confidence": 0.7056,
+      "bbox": [
+        255.4,
+        274.32,
+        311.12,
+        331.32
+      ]
+    }
+  ]
+}

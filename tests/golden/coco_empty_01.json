@@ -1,0 +1,25 @@
+{
+  "image_path": "/home/sashok/.openclaw/workspace/drone-recon/tests/fixtures/images/coco_empty_01.jpg",
+  "detections": [
+    {
+      "cls": "toilet",
+      "confidence": 0.8354,
+      "bbox": [
+        410.56,
+        235.3,
+        503.85,
+        482.33
+      ]
+    },
+    {
+      "cls": "sink",
+      "confidence": 0.8108,
+      "bbox": [
+        3.64,
+        312.71,
+        145.94,
+        394.93
+      ]
+    }
+  ]
+}

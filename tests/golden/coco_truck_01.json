@@ -1,0 +1,75 @@
+{
+  "image_path": "/home/sashok/.openclaw/workspace/drone-recon/tests/fixtures/images/coco_truck_01.jpg",
+  "detections": [
+    {
+      "cls": "refrigerator",
+      "confidence": 0.8289,
+      "bbox": [
+        298.28,
+        75.65,
+        351.75,
+        227.16
+      ]
+    },
+    {
+      "cls": "oven",
+      "confidence": 0.806,
+      "bbox": [
+        137.81,
+        125.68,
+        197.12,
+        193.44
+      ]
+    },
+    {
+      "cls": "orange",
+      "confidence": 0.641,
+      "bbox": [
+        231.7,
+        200.75,
+        248.32,
+        216.87
+      ]
+    },
+    {
+      "cls": "orange",
+      "confidence": 0.5685,
+      "bbox": [
+        215.81,
+        186.48,
+        232.25,
+        201.48
+      ]
+    },
+    {
+      "cls": "dining table",
+      "confidence": 0.558,
+      "bbox": [
+        15.43,
+        172.05,
+        293.33,
+        227.92
+      ]
+    },
+    {
+      "cls": "orange",
+      "confidence": 0.5241,
+      "bbox": [
+        204.65,
+        188.0,
+        219.38,
+        206.92
+      ]
+    },
+    {
+      "cls": "orange",
+      "confidence": 0.5047,
+      "bbox": [
+        217.34,
+        200.32,
+        231.86,
+        214.3
+      ]
+    }
+  ]
+}

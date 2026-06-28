@@ -1,0 +1,55 @@
+{
+  "image_path": "/home/sashok/.openclaw/workspace/drone-recon/tests/fixtures/images/coco_vehicle_01.jpg",
+  "detections": [
+    {
+      "cls": "bicycle",
+      "confidence": 0.9223,
+      "bbox": [
+        197.19,
+        12.25,
+        496.25,
+        386.02
+      ]
+    },
+    {
+      "cls": "car",
+      "confidence": 0.8446,
+      "bbox": [
+        149.4,
+        72.34,
+        239.19,
+        113.43
+      ]
+    },
+    {
+      "cls": "car",
+      "confidence": 0.8218,
+      "bbox": [
+        396.34,
+        81.27,
+        478.61,
+        114.66
+      ]
+    },
+    {
+      "cls": "car",
+      "confidence": 0.543,
+      "bbox": [
+        473.55,
+        78.03,
+        517.8,
+        118.5
+      ]
+    },
+    {
+      "cls": "car",
+      "confidence": 0.5217,
+      "bbox": [
+        499.51,
+        24.73,
+        639.88,
+        139.82
+      ]
+    }
+  ]
+}
