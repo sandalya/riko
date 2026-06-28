@@ -1,35 +1,42 @@
 ---
 project: drone-recon
-updated: 2026-06-27
+updated: 2026-06-28
 ---
 # HOT
 
 ## Now
-Live test passed. Full pipeline working: TG photo → bot → /detect → JSON reply.
-Next: відео тест або Phase 2 MCP Server.
+Eval framework створено і всі 8 тестів зелені.
+Next: Phase 2 — MCP Server (4 tools).
 
 ## Last done
-- Verified Phase 0: /detect inference real (bus 94%, 4 persons)
-- Wired bot/client.py: photo → /detect → JSON file → TG reply
-- Wired bot/client.py: video → /detect_video → JSON file → TG reply
-- Live test: реальне фото з людиною → person 77.6% bbox [409,122,584,517] ✅
-- Fixed .gitignore: data/, __pycache__, *.pyc excluded
-- Git commits: 563b521, 031b743
+- `tests/` — повний eval фреймворк:
+  - `conftest.py` — фікстури detector_url, fixtures_dir, golden_dir
+  - `fixtures/person_street.jpg` — реальне фото з людиною
+  - `fixtures/empty_black.jpg` — 100×100 чорний кадр (PIL)
+  - `golden/person_street.json` — baseline: min 1 detection, person ≥ 0.70
+  - `test_detector_api.py` — 5 API тестів (health, schema, 404, 422, black)
+  - `test_detector_quality.py` — 3 regression тести (confidence, golden, bbox)
+- `CLAUDE.md` оновлено: секція `## Eval / Testing`
+- Git commit: `633a7f4`
 
 ## How to resume
 ```bash
-# Terminal 1 — detector (може вже крутитись, перевір: ps aux | grep uvicorn)
+# Terminal 1 — detector
 cd /home/sashok/.openclaw/workspace/drone-recon
 venv/bin/uvicorn detector.main:app --port 8000
 
 # Terminal 2 — bot
 cd /home/sashok/.openclaw/workspace/drone-recon
 venv/bin/python3 main.py
+
+# Запустити тести
+venv/bin/pytest tests/ -v
 ```
 
 ## Next
-Option A: Тест з відео (щоб побачити timeline + timings)
-Option B: Phase 2 — MCP Server (detect_objects, analyze_video, parse_gps_log, correlate_detections_gps)
+Phase 2 — MCP Server:
+- `mcp/server.py` — 4 tools: `detect_objects`, `analyze_video`, `parse_gps_log`, `correlate_detections_gps`
+- Підключити до Claude Agent (Phase 3)
 
 ## Phase Status
 
@@ -38,6 +45,7 @@ Option B: Phase 2 — MCP Server (detect_objects, analyze_video, parse_gps_log, 
 | **Phase 0** | Detector `/detect` + `/detect_video` endpoints | ✅ Done |
 | **Phase 1** | CLAUDE.md, CC configured | ✅ Done |
 | **Bot→Detector** | TG video/photo → JSON detections → TG reply | ✅ Live tested |
+| **Eval** | pytest framework, 8 tests, golden baseline | ✅ Done |
 | **Phase 2** | MCP Server + 4 tools | ⬜ Pending |
 | **Phase 3** | Claude Agent + report generation | ⬜ Pending |
 | **Phase 4** | GPS Level 1 + deploy | ⬜ Pending |

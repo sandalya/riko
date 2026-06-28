@@ -24,3 +24,8 @@
 - Why: need regression coverage for detector API before adding new features
 - Result: 8 tests, 8 passed — API contract (5) + quality regression (3)
 - Next: wire into CI or pre-commit hook
+
+### [2026-06-28 00:10] Action: checkpoint
+- Why: зафіксувати стан після додавання eval framework
+- Result: HOT/WARM оновлені, 8 тестів зелені, commit 633a7f4
+- Next: Phase 2 — MCP Server (mcp/server.py, 4 tools)
