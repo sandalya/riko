@@ -1,0 +1,301 @@
+{
+  "video_path": "/home/sashok/.openclaw/workspace/drone-recon/tests/fixtures/videos/road_traffic.mp4",
+  "fps": 29.97,
+  "timeline": [
+    {
+      "frame_time": 0.0,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.6974,
+          "bbox": [
+            381.25,
+            86.37,
+            474.4,
+            178.71
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.6503,
+          "bbox": [
+            236.51,
+            86.91,
+            302.92,
+            178.64
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 0.501,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.7569,
+          "bbox": [
+            380.18,
+            87.0,
+            477.35,
+            178.47
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.6159,
+          "bbox": [
+            237.89,
+            87.0,
+            301.96,
+            178.78
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 1.001,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.7727,
+          "bbox": [
+            379.16,
+            86.63,
+            475.22,
+            178.0
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.6098,
+          "bbox": [
+            237.97,
+            86.88,
+            301.38,
+            179.0
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 1.502,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.6798,
+          "bbox": [
+            237.35,
+            86.87,
+            301.62,
+            178.71
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.6766,
+          "bbox": [
+            379.67,
+            84.77,
+            463.63,
+            178.07
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.5558,
+          "bbox": [
+            481.09,
+            2.42,
+            624.92,
+            175.33
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 2.002,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.7449,
+          "bbox": [
+            379.16,
+            85.82,
+            476.31,
+            178.58
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.633,
+          "bbox": [
+            237.63,
+            86.88,
+            300.87,
+            178.53
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 2.502,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.7965,
+          "bbox": [
+            378.68,
+            85.82,
+            474.14,
+            177.8
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.692,
+          "bbox": [
+            235.79,
+            86.74,
+            300.74,
+            179.29
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 3.003,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.7867,
+          "bbox": [
+            378.04,
+            85.35,
+            467.18,
+            177.48
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.5258,
+          "bbox": [
+            237.63,
+            86.9,
+            302.27,
+            178.79
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 3.504,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.7768,
+          "bbox": [
+            378.66,
+            85.68,
+            470.81,
+            178.43
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.6106,
+          "bbox": [
+            237.28,
+            86.89,
+            301.25,
+            178.43
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 4.004,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.7873,
+          "bbox": [
+            379.49,
+            85.16,
+            469.18,
+            178.17
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.615,
+          "bbox": [
+            236.81,
+            86.91,
+            301.11,
+            178.58
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.507,
+          "bbox": [
+            480.96,
+            1.94,
+            625.58,
+            175.21
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 4.505,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.7944,
+          "bbox": [
+            378.47,
+            84.57,
+            474.23,
+            178.25
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.6271,
+          "bbox": [
+            237.19,
+            86.9,
+            302.11,
+            178.5
+          ]
+        }
+      ]
+    },
+    {
+      "frame_time": 5.005,
+      "detections": [
+        {
+          "cls": "person",
+          "confidence": 0.7068,
+          "bbox": [
+            378.91,
+            83.23,
+            464.79,
+            178.41
+          ]
+        },
+        {
+          "cls": "person",
+          "confidence": 0.5973,
+          "bbox": [
+            237.38,
+            86.9,
+            302.19,
+            178.17
+          ]
+        }
+      ]
+    }
+  ]
+}
