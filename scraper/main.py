@@ -82,7 +82,7 @@ async def _process_message(
     if not is_size_ok(size_bytes):
         return "rejected", f"size={size_mb:.1f}MB out of range"
     if not is_duration_ok(duration):
-        return "rejected", f"duration={duration}s out of range"
+        return "rejected", f"duration={duration}s out of range → rejected"
 
     # Stage 2 — download
     raw_path = await download_video(client, msg, RAW_DIR)

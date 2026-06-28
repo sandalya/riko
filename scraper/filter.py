@@ -27,6 +27,8 @@ def is_size_ok(size_bytes: int) -> bool:
 
 
 def is_duration_ok(duration_sec: int) -> bool:
+    if duration_sec == 0:
+        return True  # unknown duration — allow, will check after download
     return MIN_DURATION_SEC <= duration_sec <= MAX_DURATION_SEC
 
 
