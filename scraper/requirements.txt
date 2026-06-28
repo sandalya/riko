@@ -1,0 +1,6 @@
+telethon
+imagehash
+Pillow
+opencv-python
+anthropic
+python-dotenv

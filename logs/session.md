@@ -64,3 +64,8 @@
 - Why: зафіксувати eval expansion — COCO+video регресія, 28/28 тестів
 - Result: HOT/WARM оновлені; 28 тестів green; пуш на remote
 - Next: live test bot in TG; Phase 4 GPS + deploy
+
+### [2026-06-28 03:30] Action: scraper/ module
+- Why: automated TG channel scraping pipeline for drone recon footage collection
+- Result: 6 files (config, client, downloader, filter, haiku_filter, main); all imports OK; telethon+imagehash installed
+- Next: user adds TG_API_ID + TG_API_HASH to .env; test with --no-haiku on real channel

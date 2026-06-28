@@ -5,16 +5,18 @@ updated: 2026-06-28
 # HOT
 
 ## Done
-Eval suite: 28/28 green. COCO + video regression tests + golden baselines complete.
+scraper/ module — TG channel video scraper with 5-stage filter pipeline, all imports OK.
 
 ## Last done
-- `[eval]` 6 COCO val2017 images → `tests/fixtures/images/` + golden JSONs in `tests/golden/coco_*.json`
-- `[eval]` `tests/test_coco_fixtures.py` — 6 parametrized regression tests (cls, confidence ±0.05, bbox ±5px)
-- `[eval]` `pytest.ini` — `requires_detector` marker registered
-- `[eval]` 3 video clips (5s each, yt-dlp + ffmpeg via imageio-ffmpeg) → `tests/fixtures/videos/`
-- `[eval]` golden video baselines → `tests/golden/video_*.json`
-- `[eval]` `tests/test_video_fixtures.py` — 4 tests: golden exist + 3 parametrized (frames, cls, confidence ±0.05)
-- Total: 28/28 tests ✅
+- `scraper/config.py` — channels, priority, size/duration/quality thresholds, Haiku prompt, paths
+- `scraper/client.py` — Telethon TelegramClient, `get_channel_videos()`
+- `scraper/downloader.py` — `download_video()` via `message.download_media()`
+- `scraper/filter.py` — `is_size_ok`, `is_duration_ok`, `is_quality_ok` (blur+brightness), `compute_phash`, `is_duplicate`
+- `scraper/haiku_filter.py` — `classify_frame()` async, Claude Haiku vision, base64 middle frame, fallback "unsure"
+- `scraper/main.py` — CLI, 5-stage pipeline, priority-sorted channels, stats summary
+- Installed: telethon 1.44.0, imagehash 4.3.2
+- Import verified: `from scraper.main import main` ✅
+- Earlier: 28/28 eval tests green
 
 ## How to resume
 ```bash
