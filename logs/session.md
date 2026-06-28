@@ -34,3 +34,8 @@
 - Why: explicit chkp — зафіксувати eval framework як завершений етап
 - Result: HOT/WARM/COLD оновлені, COLD перекладено на English, всі 8 тестів green
 - Next: Phase 2 — MCP Server: mcp/server.py with 4 tools
+
+### [2026-06-28 00:30] Action: Phase 2 — MCP Server
+- Why: bridge between detector and future Claude Agent
+- Result: mcp/server.py with 4 tools; import OK; detect_objects smoke test passed (person 0.776)
+- Next: Phase 3 — Claude Agent (agent/main.py)
