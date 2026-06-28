@@ -65,21 +65,28 @@ Live test: `photo_20260627_234103.jpg` → person 77.6% → Threat Level: Medium
 
 ```yaml
 last_touched: 2026-06-28
-status: done, 18/18 green
+status: done, 28/28 green
 ```
 
 ```bash
-venv/bin/pytest tests/ -v                                          # all (detector on :8000)
-venv/bin/pytest tests/test_agent.py tests/test_gps_correlation.py -v  # no detector needed
+venv/bin/pytest tests/ -v                        # 28 tests (detector on :8000)
+venv/bin/pytest -m "not requires_detector" -v    # 12 tests, no detector needed
 ```
 
 | File | Tests | Needs detector |
 |------|-------|----------------|
 | `test_detector_api.py` | 5 | yes |
 | `test_detector_quality.py` | 3 | yes |
+| `test_coco_fixtures.py` | 6 | yes (`requires_detector`) |
+| `test_video_fixtures.py` | 4 | 3 yes + 1 no |
 | `test_agent.py` | 5 | no (mock) |
 | `test_gps_correlation.py` | 5 | no |
 
-Fixtures: `person_street.jpg`, `empty_black.jpg`, `sample.gpx`, `sample_video_detections.json`
-Golden: `tests/golden/person_street.json` — person >= 0.70
-conftest: `mcp_server` fixture loads mcp/server.py via importlib; sys.path includes project root
+Fixtures:
+- Images: `person_street.jpg`, `empty_black.jpg`, `tests/fixtures/images/coco_*.jpg` (6 COCO val2017)
+- Videos: `tests/fixtures/videos/{people_walking,road_traffic,mixed_scene}.mp4` (5s each)
+- GPS: `tests/fixtures/sample.gpx` (10 synthetic trackpoints)
+
+Golden: `tests/golden/` — person_street, coco_* (6), video_* (3)
+conftest: `mcp_server` fixture (importlib); `detector_url`, `fixtures_dir`, `golden_dir`; sys.path includes project root
+pytest.ini: `requires_detector` marker registered

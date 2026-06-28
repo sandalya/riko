@@ -59,3 +59,8 @@
 - Why: зафіксувати eval expansion + bot wiring + CLAUDE.md chkp docs
 - Result: 18/18 tests green; HOT/WARM оновлені; агент в боті; GPS synthetic fixtures
 - Next: live test bot в TG з реальним фото; Phase 4 GPS + deploy
+
+### [2026-06-28 03:00] Action: checkpoint + push
+- Why: зафіксувати eval expansion — COCO+video регресія, 28/28 тестів
+- Result: HOT/WARM оновлені; 28 тестів green; пуш на remote
+- Next: live test bot in TG; Phase 4 GPS + deploy

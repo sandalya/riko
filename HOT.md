@@ -5,37 +5,32 @@ updated: 2026-06-28
 # HOT
 
 ## Done
-Eval suite expanded to 18/18 green. Agent wired into bot. chkp documented in CLAUDE.md.
+Eval suite: 28/28 green. COCO + video regression tests + golden baselines complete.
 
 ## Last done
-- `[bot]` `bot/client.py` — Claude agent wired: photo/video → _run_agent() → markdown report in TG + JSON attachment
-- `[bot]` `core/config.py` — ANTHROPIC_API_KEY, AGENT_PROMPT_PATH added
-- `[eval]` `tests/test_agent.py` — 5 tests: prompt builder, system prompt, mock Claude call
-- `[eval]` `tests/test_gps_correlation.py` — 5 tests: parse_gps_log, missing file, correlate basic/nearest/offset
-- `[eval]` `tests/fixtures/sample.gpx` — 10 synthetic trackpoints, 1s apart, lat 48.0000→48.0009
-- `[eval]` `tests/fixtures/sample_video_detections.json` — 3 frames (person, truck, empty)
-- `[eval]` `tests/conftest.py` — mcp_server session fixture (importlib), sys.path fix
-- `[meta]` `CLAUDE.md` — chkp section added after Git Discipline
-- Total: 18/18 tests green ✅
+- `[eval]` 6 COCO val2017 images → `tests/fixtures/images/` + golden JSONs in `tests/golden/coco_*.json`
+- `[eval]` `tests/test_coco_fixtures.py` — 6 parametrized regression tests (cls, confidence ±0.05, bbox ±5px)
+- `[eval]` `pytest.ini` — `requires_detector` marker registered
+- `[eval]` 3 video clips (5s each, yt-dlp + ffmpeg via imageio-ffmpeg) → `tests/fixtures/videos/`
+- `[eval]` golden video baselines → `tests/golden/video_*.json`
+- `[eval]` `tests/test_video_fixtures.py` — 4 tests: golden exist + 3 parametrized (frames, cls, confidence ±0.05)
+- Total: 28/28 tests ✅
 
 ## How to resume
 ```bash
-# Terminal 1 — detector (required for detector tests + bot)
+# Terminal 1 — detector (required for detector/COCO/video tests + bot)
 cd /home/sashok/.openclaw/workspace/drone-recon
 venv/bin/uvicorn detector.main:app --port 8000
 
 # Terminal 2 — bot
-cd /home/sashok/.openclaw/workspace/drone-recon
 venv/bin/python3 main.py
 
-# CLI agent (standalone)
+# CLI agent
 venv/bin/python agent/main.py --image data/input/photo_20260627_234103.jpg
 
-# Full test suite (detector must be on port 8000)
-venv/bin/pytest tests/ -v
-
-# GPS-only tests (no detector needed)
-venv/bin/pytest tests/test_agent.py tests/test_gps_correlation.py -v
+# Tests
+venv/bin/pytest tests/ -v                          # 28 tests (detector on :8000)
+venv/bin/pytest -m "not requires_detector" -v      # 12 tests, no detector needed
 ```
 
 ## Next
@@ -45,9 +40,9 @@ venv/bin/pytest tests/test_agent.py tests/test_gps_correlation.py -v
 
 ## Notes
 - `.env` must contain `ANTHROPIC_API_KEY`, `BOT_TOKEN`, `DETECTOR_URL`
-- `mcp/` shadows PyPI `mcp` — use importlib everywhere outside mcp/; never `from mcp.server import`
-- Bot fallback: if Claude fails → plain summary sent, bot never crashes
-- golden baseline: person >= 0.70 (`tests/golden/person_street.json`)
+- `mcp/` shadows PyPI `mcp` — always use importlib outside mcp/
+- Bot fallback: Claude fails → plain summary, never crashes
+- `requires_detector` marker: skip detector-dependent tests with `-m "not requires_detector"`
 
 ## Phase Status
 
@@ -56,7 +51,7 @@ venv/bin/pytest tests/test_agent.py tests/test_gps_correlation.py -v
 | **Phase 0** | Detector `/detect` + `/detect_video` | ✅ Done |
 | **Phase 1** | CLAUDE.md, CC configured | ✅ Done |
 | **Bot→Detector** | TG video/photo → JSON → TG reply | ✅ Live tested |
-| **Eval** | pytest 18 tests, agent+GPS+detector | ✅ Done |
+| **Eval** | pytest 28 tests, COCO+video+GPS+agent | ✅ Done |
 | **Phase 2** | MCP Server + 4 tools | ✅ Done |
 | **Phase 3** | Claude Agent + bot wired | ✅ Done |
 | **Phase 4** | GPS Level 1 + deploy | ⬜ Pending |
