@@ -44,3 +44,8 @@
 - Why: reasoning layer that calls detector tools and produces structured recon report
 - Result: agent/main.py CLI + prompts/recon_analyst.md; anthropic 0.112.0 installed; smoke test OK
 - Next: Phase 4 — GPS Level 1 + deploy (wire agent into bot, test with real GPX)
+
+### [2026-06-28 01:00] Action: checkpoint
+- Why: Phase 3 завершено + importlib фікс + dotenv auto-load
+- Result: HOT/WARM/COLD оновлені; pipeline live: photo → person 77.6% → Threat Level Medium
+- Next: Phase 4 — реальний GPX лог + wire agent в bot + deploy
