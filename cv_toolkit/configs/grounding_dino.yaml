@@ -1,0 +1,33 @@
+# Text prompts for Grounding DINO auto-labeling
+# One class → multiple prompts (improves recall)
+prompts:
+  pidar:
+    - "soldier"
+    - "person in military uniform"
+    - "fighter"
+  military_vehicle:
+    - "tank"
+    - "armored personnel carrier"
+    - "BMP infantry fighting vehicle"
+    - "BTR armored vehicle"
+    - "military truck"
+  vehicle:
+    - "pickup truck"
+    - "quad bike"
+    - "motorcycle"
+    - "minivan"
+    - "civilian car"
+  fpv_drone:
+    - "FPV drone"
+    - "quadcopter"
+    - "small drone"
+  artillery:
+    - "artillery gun"
+    - "mortar"
+    - "howitzer"
+    - "rocket launcher"
+  structure:
+    - "trench"
+    - "dugout"
+    - "fortified position"
+    - "military shelter"

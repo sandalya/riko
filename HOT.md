@@ -5,14 +5,15 @@ updated: 2026-06-28
 # HOT
 
 ## Done
-scraper/ module complete + duration filter fix. TG scraper pipeline ready to run with real credentials.
+Taxonomy v0 locked (6 classes). cv_toolkit/ folder structure created.
 
 ## Last done
-- `scraper/` — 6 файлів: config, client, downloader, filter, haiku_filter, main
-- `scraper/client.py` — load_dotenv з явним шляхом до .env (виправлено юзером)
-- `scraper/filter.py` — `is_duration_ok(0) → True` (невідома тривалість з TG метаданих пропускається)
-- Telethon 1.44.0, imagehash 4.3.2 встановлено
-- Import verified ✅ | 28/28 eval tests green
+- `taxonomy.yaml` — v0.1, 6 класів, class IDs locked (не переставляти!)
+- `cv_toolkit/eval/MODEL_REGISTRY.md` — таблиця моделей, baseline: yolo11n-coco
+- `cv_toolkit/configs/grounding_dino.yaml` — text prompts для авто-розмітки
+- `cv_toolkit/configs/train.yaml` — placeholder для першого fine-tune
+- `cv_toolkit/` папки: pipeline/, eval/, golden_test/, datasets/{raw_frames,review_queue,verified}/
+- Раніше: scraper/ module, 28/28 eval tests green
 
 ## How to resume
 ```bash
@@ -32,6 +33,7 @@ venv/bin/pytest -m "not requires_detector" -v   # 12 tests, no detector needed
 ```
 
 ## Next
+- **Phase 0.2 — golden test set**: зібрати ~50 кадрів per class із scraper output, авто-розмітка Grounding DINO
 - Додати TG_API_ID + TG_API_HASH в .env і запустити scraper на реальному каналі
 - Live test bot в TG: надіслати фото → отримати Claude report
 - Phase 4: реальний GPX лог + deploy

@@ -1,0 +1,18 @@
+# drone-recon taxonomy v0
+# Locked class IDs — do not reorder (breaks existing annotations)
+version: "0.1"
+date: "2026-06-28"
+notes: "v0 — 6 classes for first fine-tune cycle. military_vehicle=heavy, vehicle=light."
+
+classes:
+  0: pidar            # person / soldier in field context
+  1: military_vehicle # heavy: tank, BMP, BTR, SPG, IFV
+  2: vehicle          # light: pickup, quad, motorcycle, minivan (bukhanka)
+  3: fpv_drone        # drone visible in frame
+  4: artillery        # guns, mortars, MLRS
+  5: structure        # trench, shelter, fortified position
+
+merge_notes:
+  military_vehicle: "tank/BMP/BTR/BTR merged — split in v1 when data allows"
+  vehicle: "pickup/quad/motorcycle/bukhanka — all light tactical transport"
+  pidar: "replaces COCO person class"

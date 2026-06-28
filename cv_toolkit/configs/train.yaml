@@ -1,0 +1,9 @@
+# Training config placeholder — fill before first fine-tune run
+# model: yolo11n.pt
+# data: cv_toolkit/datasets/verified/dataset.yaml
+# epochs: 100
+# imgsz: 640
+# batch: 16
+# lr0: 0.01
+# nc: 6
+# names: [pidar, military_vehicle, vehicle, fpv_drone, artillery, structure]
