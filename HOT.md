@@ -5,40 +5,36 @@ updated: 2026-06-28
 # HOT
 
 ## Done
-scraper/ module — TG channel video scraper with 5-stage filter pipeline, all imports OK.
+scraper/ module complete + duration filter fix. TG scraper pipeline ready to run with real credentials.
 
 ## Last done
-- `scraper/config.py` — channels, priority, size/duration/quality thresholds, Haiku prompt, paths
-- `scraper/client.py` — Telethon TelegramClient, `get_channel_videos()`
-- `scraper/downloader.py` — `download_video()` via `message.download_media()`
-- `scraper/filter.py` — `is_size_ok`, `is_duration_ok`, `is_quality_ok` (blur+brightness), `compute_phash`, `is_duplicate`
-- `scraper/haiku_filter.py` — `classify_frame()` async, Claude Haiku vision, base64 middle frame, fallback "unsure"
-- `scraper/main.py` — CLI, 5-stage pipeline, priority-sorted channels, stats summary
-- Installed: telethon 1.44.0, imagehash 4.3.2
-- Import verified: `from scraper.main import main` ✅
-- Earlier: 28/28 eval tests green
+- `scraper/` — 6 файлів: config, client, downloader, filter, haiku_filter, main
+- `scraper/client.py` — load_dotenv з явним шляхом до .env (виправлено юзером)
+- `scraper/filter.py` — `is_duration_ok(0) → True` (невідома тривалість з TG метаданих пропускається)
+- Telethon 1.44.0, imagehash 4.3.2 встановлено
+- Import verified ✅ | 28/28 eval tests green
 
 ## How to resume
 ```bash
-# Terminal 1 — detector (required for detector/COCO/video tests + bot)
+# Terminal 1 — detector
 cd /home/sashok/.openclaw/workspace/drone-recon
 venv/bin/uvicorn detector.main:app --port 8000
 
 # Terminal 2 — bot
 venv/bin/python3 main.py
 
-# CLI agent
-venv/bin/python agent/main.py --image data/input/photo_20260627_234103.jpg
+# Scraper (потрібні TG_API_ID + TG_API_HASH в .env)
+venv/bin/python scraper/main.py --channels escadrone --limit 50 --no-haiku
 
 # Tests
-venv/bin/pytest tests/ -v                          # 28 tests (detector on :8000)
-venv/bin/pytest -m "not requires_detector" -v      # 12 tests, no detector needed
+venv/bin/pytest tests/ -v                       # 28 tests (detector on :8000)
+venv/bin/pytest -m "not requires_detector" -v   # 12 tests, no detector needed
 ```
 
 ## Next
-- Live test bot in TG: send real photo → verify Claude report arrives
-- Phase 4: collect real GPX log from drone, test correlate end-to-end
-- Deploy: VPS or Beelink + tunnel
+- Додати TG_API_ID + TG_API_HASH в .env і запустити scraper на реальному каналі
+- Live test bot в TG: надіслати фото → отримати Claude report
+- Phase 4: реальний GPX лог + deploy
 
 ## Notes
 - `.env` must contain `ANTHROPIC_API_KEY`, `BOT_TOKEN`, `DETECTOR_URL`

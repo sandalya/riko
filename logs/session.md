@@ -69,3 +69,8 @@
 - Why: automated TG channel scraping pipeline for drone recon footage collection
 - Result: 6 files (config, client, downloader, filter, haiku_filter, main); all imports OK; telethon+imagehash installed
 - Next: user adds TG_API_ID + TG_API_HASH to .env; test with --no-haiku on real channel
+
+### [2026-06-28 04:00] Action: checkpoint + push
+- Why: зафіксувати scraper module + duration fix перед тестом на реальних даних
+- Result: HOT/WARM оновлені; scraper ready; duration=0 пропускається
+- Next: додати TG_API_ID/TG_API_HASH в .env; запустити scraper; live test bot

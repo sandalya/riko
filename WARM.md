@@ -90,3 +90,27 @@ Fixtures:
 Golden: `tests/golden/` — person_street, coco_* (6), video_* (3)
 conftest: `mcp_server` fixture (importlib); `detector_url`, `fixtures_dir`, `golden_dir`; sys.path includes project root
 pytest.ini: `requires_detector` marker registered
+
+## Scraper
+
+```yaml
+last_touched: 2026-06-28
+status: done, import verified, not yet run on real TG
+```
+
+```bash
+# First run (interactive TG auth):
+venv/bin/python scraper/main.py --channels escadrone --limit 50 --no-haiku
+
+# With Haiku vision filter:
+venv/bin/python scraper/main.py --channels escadrone DPSUkr --limit 100
+```
+
+Pipeline: metadata filter → download raw/ → quality (blur/brightness) → phash dedup → Haiku vision → approved/ | review/ | rejected/
+
+Config: `scraper/config.py` — channels, thresholds, paths
+`.env` needs: `TG_API_ID`, `TG_API_HASH`
+Session: `data/scraper/tg_session` (created on first run, interactive)
+Hashes: `data/scraper/hashes.json` (persists across runs)
+
+Key fix: `is_duration_ok(0) → True` — TG metadata often returns duration=0 for unknown
