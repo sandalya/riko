@@ -1,0 +1,9 @@
+{
+  "video_path": "/tmp/test.mp4",
+  "fps": 25.0,
+  "timeline": [
+    {"frame_time": 0.0, "detections": [{"cls": "person", "confidence": 0.82, "bbox": [100, 100, 200, 300]}]},
+    {"frame_time": 2.0, "detections": [{"cls": "truck", "confidence": 0.71, "bbox": [50, 50, 400, 350]}]},
+    {"frame_time": 5.0, "detections": []}
+  ]
+}
