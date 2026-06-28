@@ -110,6 +110,31 @@ Examples: `[detector] add video endpoint`, `[mcp] add gps parse tool`, `[agent] 
 
 ---
 
+## Checkpoint (chkp)
+
+`chkp` is a memory tool that commits code + updates HOT/WARM/COLD memory in one step.
+
+When to call: end of each phase, or when user writes "чкп" / "зафіксуй сесію".
+
+```bash
+chkp drone-recon "what was done" "next step" "context/notes"
+```
+
+What it does:
+- git add -A + commit --no-verify + push
+- Rewrites HOT.md (current state, next step, how to resume)
+- Updates WARM.md (stable context, last results)
+- Appends to logs/session.md
+
+Rules:
+- NEVER do `git push` then immediately `chkp` — code and memory will desync
+- Either push OR chkp, not both back-to-back
+- HOT.md = what's hot right now (changes every session)
+- WARM.md = stable facts that don't change often
+- COLD.md = architecture, never changes mid-session
+
+---
+
 ## Model Swapping
 
 The YOLO model path is always in `detector/config.py` → `MODEL_PATH`.  
@@ -117,6 +142,13 @@ Never hardcode model paths elsewhere.
 Swap `yolo11n.pt` → `military_v2.pt` by changing only `config.py`.
 
 ---
+
+## Eval / Testing
+- Run `venv/bin/pytest tests/ -v` (detector must be on port 8000)
+- `tests/test_detector_api.py` — API contract (health, schema, 404, 422, black frame)
+- `tests/test_detector_quality.py` — regression vs golden baseline (`tests/golden/`)
+- Add fixtures to `tests/fixtures/` + update `tests/golden/` when baseline changes
+- Run tests after every model swap or detector change
 
 ## Token / Cost Notes
 
