@@ -7,12 +7,28 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 from pathlib import Path
+from types import ModuleType
 
 import anthropic
 
 MODEL = "claude-sonnet-4-6"
+
+# Load mcp/server.py by explicit path — avoids the PyPI `mcp` package shadowing
+# our local mcp/ directory when agent/main.py is run as a script (sys.path[0] = agent/).
+_MCP_SERVER_PATH = Path(__file__).parent.parent / "mcp" / "server.py"
+_mcp_server: ModuleType | None = None
+
+
+def _mcp() -> ModuleType:
+    global _mcp_server
+    if _mcp_server is None:
+        spec = importlib.util.spec_from_file_location("_drone_recon_mcp_server", _MCP_SERVER_PATH)
+        _mcp_server = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(_mcp_server)
+    return _mcp_server
 _PROMPT_PATH = Path(__file__).parent / "prompts" / "recon_analyst.md"
 SYSTEM_PROMPT = _PROMPT_PATH.read_text(encoding="utf-8")
 
@@ -51,10 +67,9 @@ def build_report_prompt(
 # ---------------------------------------------------------------------------
 
 def _run_image(image_path: str, gps_path: str | None) -> str:
-    from mcp.server import detect_objects, parse_gps_log
-
-    detections = detect_objects(image_path)
-    gps = parse_gps_log(gps_path) if gps_path else None
+    srv = _mcp()
+    detections = srv.detect_objects(image_path)
+    gps = srv.parse_gps_log(gps_path) if gps_path else None
     return build_report_prompt(detections, gps_log=gps)
 
 
@@ -64,12 +79,11 @@ def _run_video(
     every_n_frames: int,
     offset: float,
 ) -> str:
-    from mcp.server import analyze_video, correlate_detections_gps
-
-    detections = analyze_video(video_path, every_n_frames=every_n_frames)
+    srv = _mcp()
+    detections = srv.analyze_video(video_path, every_n_frames=every_n_frames)
 
     if gps_path:
-        correlated = correlate_detections_gps(
+        correlated = srv.correlate_detections_gps(
             json.dumps(detections),
             gps_path,
             offset_seconds=offset,
