@@ -1,5 +1,10 @@
+import sys
 from pathlib import Path
+
 import pytest
+
+# Ensure project root is on sys.path so project modules (bot, agent, mcp, core) are importable.
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 @pytest.fixture(scope="session")
