@@ -5,15 +5,16 @@ updated: 2026-06-28
 # HOT
 
 ## Done
-Phase 2 — MCP Server done. mcp/server.py with 4 tools, import verified OK.
+Phase 3 — Claude Agent done. agent/main.py CLI, build_report_prompt importable, smoke test OK.
 
 ## Last done
-- `mcp/server.py` — 4 tools: detect_objects, analyze_video, parse_gps_log, correlate_detections_gps
-- `mcp/__init__.py` — empty package marker
-- `mcp/requirements.txt` — fastmcp, httpx, gpxpy
-- Installed: fastmcp 3.4.2, gpxpy 1.6.2
-- Smoke tested: detect_objects returns person 0.776, parse_gps_log raises ValueError on missing file
-- Import verified: `venv/bin/python -c "import mcp.server; print('OK')"` ✅
+- `agent/main.py` — CLI agent: --image/--video, --gps, --every-n-frames, --offset
+- `agent/__init__.py` — empty package marker
+- `agent/prompts/recon_analyst.md` — system prompt: role, table format, threat levels
+- Installed: anthropic 0.112.0
+- Model: claude-sonnet-4-6
+- Smoke test: `from agent.main import build_report_prompt` ✅
+- Prompt output verified: correct markdown structure for image/video/GPS inputs
 
 ## How to resume
 ```bash
@@ -25,23 +26,25 @@ venv/bin/uvicorn detector.main:app --port 8000
 cd /home/sashok/.openclaw/workspace/drone-recon
 venv/bin/python3 main.py
 
-# Run MCP server (when needed by agent)
-venv/bin/python mcp/server.py
+# Run agent (requires ANTHROPIC_API_KEY in .env or env)
+venv/bin/python agent/main.py --image data/input/photo_20260627_234103.jpg
+venv/bin/python agent/main.py --video <path> --gps data/gps/<file>.gpx
 
 # Run tests (detector must be on port 8000)
 venv/bin/pytest tests/ -v
 ```
 
 ## Next
-Phase 3 — Claude Agent (agent/main.py):
-- System prompt: recon analyst role
-- Call MCP tools: detect_objects → parse_gps_log → correlate_detections_gps
-- Output: structured report with object table + threat levels
+Phase 4 — GPS Level 1 + deploy:
+- Test full pipeline end-to-end with real GPX log
+- Wire agent into Telegram bot (replace JSON reply with Claude report)
+- Deploy: choose VPS or Beelink + tunnel
 
 ## Notes
 - `pytest tests/ -v` requires detector on port 8000
 - golden baseline: person >= 0.70 confidence (`tests/golden/person_street.json`)
-- mcp/ directory shadows PyPI mcp package — fastmcp import is deferred to `__main__` block with sys.path fix
+- mcp/ directory shadows PyPI mcp package — fastmcp import deferred to `__main__` with sys.path fix
+- agent uses direct mcp.server function imports (no subprocess), deferred inside pipeline runners
 
 ## Phase Status
 
@@ -51,8 +54,8 @@ Phase 3 — Claude Agent (agent/main.py):
 | **Phase 1** | CLAUDE.md, CC configured | ✅ Done |
 | **Bot→Detector** | TG video/photo → JSON detections → TG reply | ✅ Live tested |
 | **Eval** | pytest framework, 8 tests, golden baseline | ✅ Done |
-| **Phase 2** | MCP Server + 4 tools | ⬜ Pending |
-| **Phase 3** | Claude Agent + report generation | ⬜ Pending |
+| **Phase 2** | MCP Server + 4 tools | ✅ Done |
+| **Phase 3** | Claude Agent + report generation | ✅ Done |
 | **Phase 4** | GPS Level 1 + deploy | ⬜ Pending |
 
 ## Architecture

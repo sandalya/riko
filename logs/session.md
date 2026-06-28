@@ -39,3 +39,8 @@
 - Why: bridge between detector and future Claude Agent
 - Result: mcp/server.py with 4 tools; import OK; detect_objects smoke test passed (person 0.776)
 - Next: Phase 3 — Claude Agent (agent/main.py)
+
+### [2026-06-28 00:45] Action: Phase 3 — Claude Agent
+- Why: reasoning layer that calls detector tools and produces structured recon report
+- Result: agent/main.py CLI + prompts/recon_analyst.md; anthropic 0.112.0 installed; smoke test OK
+- Next: Phase 4 — GPS Level 1 + deploy (wire agent into bot, test with real GPX)
