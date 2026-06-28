@@ -4,20 +4,19 @@ updated: 2026-06-28
 ---
 # HOT
 
-## Now
-Eval framework створено і всі 8 тестів зелені.
-Next: Phase 2 — MCP Server (4 tools).
+## Done
+Eval framework done — 8/8 tests green, CLAUDE.md updated, memory rules translated to English.
 
 ## Last done
-- `tests/` — повний eval фреймворк:
-  - `conftest.py` — фікстури detector_url, fixtures_dir, golden_dir
-  - `fixtures/person_street.jpg` — реальне фото з людиною
-  - `fixtures/empty_black.jpg` — 100×100 чорний кадр (PIL)
-  - `golden/person_street.json` — baseline: min 1 detection, person ≥ 0.70
-  - `test_detector_api.py` — 5 API тестів (health, schema, 404, 422, black)
-  - `test_detector_quality.py` — 3 regression тести (confidence, golden, bbox)
-- `CLAUDE.md` оновлено: секція `## Eval / Testing`
-- Git commit: `633a7f4`
+- `tests/conftest.py` — fixtures: detector_url, fixtures_dir, golden_dir
+- `tests/fixtures/person_street.jpg` — real photo with person
+- `tests/fixtures/empty_black.jpg` — 100×100 black frame (PIL)
+- `tests/golden/person_street.json` — baseline: min 1 detection, person >= 0.70
+- `tests/test_detector_api.py` — 5 API tests (health, schema, 404, 422, black frame)
+- `tests/test_detector_quality.py` — 3 regression tests (confidence, golden, bbox)
+- `CLAUDE.md` — added `## Eval / Testing` section
+- `COLD.md` — translated to English
+- Git commits: `633a7f4`, `e4a9221`
 
 ## How to resume
 ```bash
@@ -29,14 +28,20 @@ venv/bin/uvicorn detector.main:app --port 8000
 cd /home/sashok/.openclaw/workspace/drone-recon
 venv/bin/python3 main.py
 
-# Запустити тести
+# Run tests (detector must be on port 8000)
 venv/bin/pytest tests/ -v
 ```
 
 ## Next
-Phase 2 — MCP Server:
-- `mcp/server.py` — 4 tools: `detect_objects`, `analyze_video`, `parse_gps_log`, `correlate_detections_gps`
-- Підключити до Claude Agent (Phase 3)
+Phase 2 — MCP Server: mcp/server.py with 4 tools:
+- `detect_objects`
+- `analyze_video`
+- `parse_gps_log`
+- `correlate_detections_gps`
+
+## Notes
+- `pytest tests/ -v` requires detector on port 8000
+- golden baseline: person >= 0.70 confidence (`tests/golden/person_street.json`)
 
 ## Phase Status
 
@@ -55,13 +60,13 @@ Phase 2 — MCP Server:
 ```
 [TG Bot] ──► [Detector FastAPI :8000] ──► [JSON file] ──► [TG reply]
                       │
-              (майбутнє: через MCP Server → Claude Agent → звіт)
+              (future: via MCP Server → Claude Agent → report)
 ```
 
 ## Blockers
 None.
 
 ## Open Questions
-- Drone FC для GPS логів? (Betaflight / ArduPilot / other)
-- Target detection classes для fine-tuned моделі?
-- Deploy: VPS чи Beelink + tunnel?
+- Drone FC for GPS logs? (Betaflight / ArduPilot / other)
+- Target detection classes for fine-tuned model?
+- Deploy: VPS or Beelink + tunnel?

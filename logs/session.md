@@ -29,3 +29,8 @@
 - Why: зафіксувати стан після додавання eval framework
 - Result: HOT/WARM оновлені, 8 тестів зелені, commit 633a7f4
 - Next: Phase 2 — MCP Server (mcp/server.py, 4 tools)
+
+### [2026-06-28 00:20] Action: checkpoint
+- Why: explicit chkp — зафіксувати eval framework як завершений етап
+- Result: HOT/WARM/COLD оновлені, COLD перекладено на English, всі 8 тестів green
+- Next: Phase 2 — MCP Server: mcp/server.py with 4 tools

@@ -1,32 +1,34 @@
-# COLD — незмінний контекст проекту
+# COLD — immutable project context
 
-## Мета
-Замінити ручний перегляд відео з дрону на AI агента: детекція → локалізація → звіт.
+## Goal
+Replace manual drone video review with an AI agent: detection → localization → report.
 
-## Стек
+## Stack
 - **Detector**: FastAPI + Ultralytics YOLO (Python 3.14, venv)
 - **Bot**: python-telegram-bot v21
-- **Agent**: Claude API (майбутнє)
-- **MCP**: mcp SDK (майбутнє)
+- **Agent**: Claude API (future)
+- **MCP**: mcp SDK (future)
 
-## Структура
+## Structure
 ```
 drone-recon/
-├── detector/main.py       — FastAPI сервіс детекції
-├── detector/config.py     — MODEL_PATH (єдине місце для swap моделі)
-├── detector/models/       — .pt файли
+├── detector/main.py       — FastAPI detection service
+├── detector/config.py     — MODEL_PATH (only place for model swap)
+├── detector/models/       — .pt model files
 ├── bot/client.py          — TG handlers
 ├── core/config.py         — BOT_TOKEN, DETECTOR_URL, paths
-├── main.py                — точка входу бота
+├── main.py                — bot entry point
 ├── mcp/                   — MCP Server (Phase 2)
 ├── agent/                 — Claude Agent (Phase 3)
-├── data/input/            — вхідні відео/фото (не в git)
-├── data/output/           — JSON результати (не в git)
+├── tests/                 — pytest eval framework
+├── data/input/            — raw video/photos (not in git)
+├── data/output/           — JSON results (not in git)
 └── .env                   — BOT_TOKEN, ANTHROPIC_API_KEY, DETECTOR_URL
 ```
 
-## Правила
-- Model swap: тільки `detector/config.py`
-- Геолокація PoC: GPS timestamp correlation (Level 1)
-- Логи: append-only `logs/session.md`
-- Коміти: `[block] short description`
+## Rules
+- Model swap: only `detector/config.py` → `MODEL_PATH`
+- Geolocation PoC: GPS timestamp correlation (Level 1)
+- Logs: append-only `logs/session.md`
+- Commits: `[block] short description`
+- Tests: run `venv/bin/pytest tests/ -v` after every model swap or detector change
