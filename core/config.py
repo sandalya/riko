@@ -8,6 +8,9 @@ load_dotenv(BASE_DIR / ".env")
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 DETECTOR_URL = os.getenv("DETECTOR_URL", "http://localhost:8000")
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+
+AGENT_PROMPT_PATH = BASE_DIR / "agent" / "prompts" / "recon_analyst.md"
 
 LOGS_DIR = BASE_DIR / "logs"
 DATA_INPUT_DIR = BASE_DIR / "data" / "input"

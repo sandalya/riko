@@ -49,3 +49,8 @@
 - Why: Phase 3 завершено + importlib фікс + dotenv auto-load
 - Result: HOT/WARM/COLD оновлені; pipeline live: photo → person 77.6% → Threat Level Medium
 - Next: Phase 4 — реальний GPX лог + wire agent в bot + deploy
+
+### [2026-06-28 01:20] Action: wire Claude Agent into Telegram bot
+- Why: replace raw JSON reply with structured recon report from Claude
+- Result: bot/client.py — _run_agent() helper, asyncio.to_thread, fallback on error; core/config.py — ANTHROPIC_API_KEY + AGENT_PROMPT_PATH
+- Next: live test bot with real photo; Phase 4 GPS + deploy
