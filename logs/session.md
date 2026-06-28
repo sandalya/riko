@@ -19,3 +19,8 @@
 - Why: Не починати нову фазу без підтвердження попередньої
 - Result: /detect повертає реальний inference (bus 94%, persons 88%). Порт 8000 живий.
 - Next: Wire bot → detector
+
+### [2026-06-28 00:00] Action: create eval framework
+- Why: need regression coverage for detector API before adding new features
+- Result: 8 tests, 8 passed — API contract (5) + quality regression (3)
+- Next: wire into CI or pre-commit hook

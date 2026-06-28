@@ -1,0 +1,6 @@
+{
+  "min_detections": 1,
+  "checks": [
+    {"cls": "person", "min_confidence": 0.70}
+  ]
+}
