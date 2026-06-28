@@ -5,18 +5,22 @@ updated: 2026-06-28
 # HOT
 
 ## Done
-Claude Agent wired into Telegram bot. Photo/video → detector → Claude → markdown recon report in TG.
+Eval suite expanded to 18/18 green. Agent wired into bot. chkp documented in CLAUDE.md.
 
 ## Last done
-- `bot/client.py` — `_run_agent(detections, media_type)` helper: builds prompt → `asyncio.to_thread(_call_claude)` → returns markdown report
-- `bot/client.py` — `handle_photo` / `handle_video`: send Claude report as reply_text + JSON as document attachment
-- `bot/client.py` — fallback to raw summary if Claude fails (bot never crashes)
-- `core/config.py` — added `ANTHROPIC_API_KEY`, `AGENT_PROMPT_PATH`
-- Smoke test: imports + `_build_prompt` + `_system_prompt()` OK ✅
+- `[bot]` `bot/client.py` — Claude agent wired: photo/video → _run_agent() → markdown report in TG + JSON attachment
+- `[bot]` `core/config.py` — ANTHROPIC_API_KEY, AGENT_PROMPT_PATH added
+- `[eval]` `tests/test_agent.py` — 5 tests: prompt builder, system prompt, mock Claude call
+- `[eval]` `tests/test_gps_correlation.py` — 5 tests: parse_gps_log, missing file, correlate basic/nearest/offset
+- `[eval]` `tests/fixtures/sample.gpx` — 10 synthetic trackpoints, 1s apart, lat 48.0000→48.0009
+- `[eval]` `tests/fixtures/sample_video_detections.json` — 3 frames (person, truck, empty)
+- `[eval]` `tests/conftest.py` — mcp_server session fixture (importlib), sys.path fix
+- `[meta]` `CLAUDE.md` — chkp section added after Git Discipline
+- Total: 18/18 tests green ✅
 
 ## How to resume
 ```bash
-# Terminal 1 — detector (required)
+# Terminal 1 — detector (required for detector tests + bot)
 cd /home/sashok/.openclaw/workspace/drone-recon
 venv/bin/uvicorn detector.main:app --port 8000
 
@@ -27,19 +31,22 @@ venv/bin/python3 main.py
 # CLI agent (standalone)
 venv/bin/python agent/main.py --image data/input/photo_20260627_234103.jpg
 
-# Tests (detector must be on port 8000)
+# Full test suite (detector must be on port 8000)
 venv/bin/pytest tests/ -v
+
+# GPS-only tests (no detector needed)
+venv/bin/pytest tests/test_agent.py tests/test_gps_correlation.py -v
 ```
 
 ## Next
-- Live test bot with real photo/video → verify Claude report arrives in TG
-- Phase 4: collect real GPX log, test correlate_detections_gps end-to-end
+- Live test bot in TG: send real photo → verify Claude report arrives
+- Phase 4: collect real GPX log from drone, test correlate end-to-end
 - Deploy: VPS or Beelink + tunnel
 
 ## Notes
 - `.env` must contain `ANTHROPIC_API_KEY`, `BOT_TOKEN`, `DETECTOR_URL`
-- `mcp/` shadows PyPI `mcp` pkg — agent uses importlib, bot uses direct `_build_prompt` (no import needed)
-- Bot falls back to plain summary if Claude API fails — never crashes
+- `mcp/` shadows PyPI `mcp` — use importlib everywhere outside mcp/; never `from mcp.server import`
+- Bot fallback: if Claude fails → plain summary sent, bot never crashes
 - golden baseline: person >= 0.70 (`tests/golden/person_street.json`)
 
 ## Phase Status
@@ -49,9 +56,9 @@ venv/bin/pytest tests/ -v
 | **Phase 0** | Detector `/detect` + `/detect_video` | ✅ Done |
 | **Phase 1** | CLAUDE.md, CC configured | ✅ Done |
 | **Bot→Detector** | TG video/photo → JSON → TG reply | ✅ Live tested |
-| **Eval** | pytest, 8 tests, golden baseline | ✅ Done |
+| **Eval** | pytest 18 tests, agent+GPS+detector | ✅ Done |
 | **Phase 2** | MCP Server + 4 tools | ✅ Done |
-| **Phase 3** | Claude Agent + report generation | ✅ Done |
+| **Phase 3** | Claude Agent + bot wired | ✅ Done |
 | **Phase 4** | GPS Level 1 + deploy | ⬜ Pending |
 
 ## Architecture
@@ -63,7 +70,7 @@ venv/bin/pytest tests/ -v
                       │
               [Claude Agent claude-sonnet-4-6]
                       │
-              [Structured recon report]
+              [Markdown recon report → TG reply]
 ```
 
 ## Open Questions

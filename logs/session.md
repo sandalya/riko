@@ -54,3 +54,8 @@
 - Why: replace raw JSON reply with structured recon report from Claude
 - Result: bot/client.py — _run_agent() helper, asyncio.to_thread, fallback on error; core/config.py — ANTHROPIC_API_KEY + AGENT_PROMPT_PATH
 - Next: live test bot with real photo; Phase 4 GPS + deploy
+
+### [2026-06-28 02:00] Action: checkpoint
+- Why: зафіксувати eval expansion + bot wiring + CLAUDE.md chkp docs
+- Result: 18/18 tests green; HOT/WARM оновлені; агент в боті; GPS synthetic fixtures
+- Next: live test bot в TG з реальним фото; Phase 4 GPS + deploy
