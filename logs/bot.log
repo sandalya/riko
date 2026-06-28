@@ -32,3 +32,9 @@ task: <Task pending name='Application:8674217134:update_fetcher' coro=<Applicati
 2026-06-27 23:40:45,267 [INFO] telegram.ext.Application: Application started
 2026-06-27 23:41:03,301 [INFO] bot.client: Saved photo: /home/sashok/.openclaw/workspace/drone-recon/data/input/photo_20260627_234103.jpg
 2026-06-27 23:41:03,524 [INFO] bot.client: Sent detections: /home/sashok/.openclaw/workspace/drone-recon/data/output/photo_20260627_234103_detections.json
+2026-06-28 14:05:28,272 [INFO] main: Drone-recon стартує...
+2026-06-28 14:05:28,293 [INFO] bot.client: Handlers налаштовано
+2026-06-28 14:05:28,293 [INFO] main: Polling запущено
+2026-06-28 14:05:28,477 [INFO] telegram.ext.Application: Application started
+2026-06-28 14:05:50,418 [INFO] bot.client: Saved photo: /home/sashok/.openclaw/workspace/drone-recon/data/input/photo_20260628_140550.jpg
+2026-06-28 14:05:56,426 [INFO] bot.client: Sent report + detections: /home/sashok/.openclaw/workspace/drone-recon/data/output/photo_20260628_140550_detections.json

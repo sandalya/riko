@@ -10,7 +10,7 @@ from telethon.tl.types import Message
 
 from scraper.config import SESSION_FILE
 
-load_dotenv()
+load_dotenv(Path(__file__).parent.parent / ".env")
 
 _API_ID   = int(os.getenv("TG_API_ID", "0"))
 _API_HASH = os.getenv("TG_API_HASH", "")

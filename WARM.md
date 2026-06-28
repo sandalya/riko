@@ -1,3 +1,5 @@
+
+
 # WARM — stable context
 
 ## Detector Service
@@ -114,3 +116,17 @@ Session: `data/scraper/tg_session` (created on first run, interactive)
 Hashes: `data/scraper/hashes.json` (persists across runs)
 
 Key fix: `is_duration_ok(0) → True` — TG metadata often returns duration=0 for unknown
+
+## cv_toolkit
+
+```yaml
+last_touched: 2026-06-29
+tags: [labeling, frame-extraction, preparation]
+status: active
+```
+
+Framework for dataset curation and annotation:
+- `frame_extractor.py` — extract frames from 6 FPV videos → 916 frames output
+- Golden test set: manual labeling of 100–200 frames (Phase 0.2)
+- Integration with Grounding DINO for auto-labeling pipeline
+- Taxonomy v0 locked: 6 object classes

@@ -1,4 +1,4 @@
 Проект: drone-recon
-Стан: Phase 0 завершена — detector з YOLO11n.pt live, /detect endpoint протестований.
-Далі: Phase 2 — MCP Server з 4 tools (detect_objects, analyze_video, parse_gps_log, correlate_detections_gps).
-Поділись HOT.md + WARM.md перед стартом.
+Стан: Taxonomy v0 locked (6 классов), frame_extractor готов — 916 кадрів з 6 FPV відео. cv_toolkit/ структура створена.
+Далі: Phase 0.2 — manual label 100–200 frames, prep Grounding DINO auto-labeling.
+Поділись HOT.md + WARM.md актуальні.

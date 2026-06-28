@@ -12,7 +12,9 @@ import json
 from pathlib import Path
 from types import ModuleType
 
+from dotenv import load_dotenv
 import anthropic
+load_dotenv()
 
 MODEL = "claude-sonnet-4-6"
 
