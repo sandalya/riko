@@ -1,19 +1,19 @@
 ---
 project: drone-recon
-updated: 2026-07-01
+updated: 2026-07-02
 ---
 # HOT
 
 ## Now
-Audited SPEC_v001.md during workspace migration (Pi5→Beelink SER5) — confirmed Pi5 refs are edge-platform architecture decisions for onboard inference, not dev-server infra; left unchanged intentionally.
+Migrated to English thinking language: translated PROMPT.md to English, updated CLAUDE.md Rule 1 with explicit principle — model thinks in English, responds to user in Ukrainian based on input language.
 
 ## Last done
-- Reviewed SPEC_v001.md Pi5 references in context of workspace migration
-- Verified SPEC reflects onboard inference design, not development infrastructure
-- Confirmed no code changes needed in drone-recon repository
+- Translated PROMPT.md from Ukrainian to English
+- Updated CLAUDE.md Rule 1: added explicit principle for language model thinking (English) vs. response language (user's input language)
+- No code changes; infrastructure already mostly English (HOT/WARM/COLD/agent prompts)
 
 ## Next
-Phase 0.2: manually label 100–200 frames from extracted 916 frames for golden test set.
+Phase 0.2 — manually label 100–200 frames from 916 extracted frames for golden test set.
 
 ## Blockers
 None.

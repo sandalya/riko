@@ -2,7 +2,7 @@
 
 ## Rules
 
-1. **Language**: Always respond to the user in Ukrainian. Code and documentation must be written in English.
+1. **Language**: Separate interface language from model thinking language. System prompts, instructions, HOT/WARM/COLD memory, and all internal context → English (cheaper tokens, more precise reasoning). User-facing responses → Ukrainian. Response language is determined by the user's input language, not the system prompt language.
 
 ---
 

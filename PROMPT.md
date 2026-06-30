@@ -1,4 +1,4 @@
-Проект: drone-recon
-Стан: Workspace migration Pi5→Beelink SER5 завершена. SPEC_v001.md аудирована — Pi5 refs залишені невпиненими як design intent для edge inference. 916 кадрів витягнути та готові до мітування.
-Далі: Phase 0.2 — вручну помітити 100–200 кадрів з 916 для golden test set.
-Поділись HOT.md + WARM.md.
+Project: drone-recon
+State: Language infrastructure migrated to English thinking (PROMPT.md + CLAUDE.md Rule 1 updated); 916 frames extracted, ready for golden test labeling.
+Next: Phase 0.2 — manually label 100–200 frames for golden test set.
+Share HOT.md + WARM.md on resume.
