@@ -1,20 +1,19 @@
 ---
 project: drone-recon
-updated: 2026-06-29
+updated: 2026-06-30
 ---
 # HOT
 
 ## Now
-Taxonomy v0 locked (6 classes), frame_extractor completed — 916 frames extracted from 6 FPV videos. cv_toolkit/ folder structure created per Opus roadmap.
+Audited SPEC_v001.md during workspace migration (Pi5→Beelink SER5) — confirmed Pi5 refs are edge-platform architecture decisions for onboard inference, not dev-server infra. Left unchanged intentionally.
 
 ## Last done
-- Finalized taxonomy v0 with 6 object classes
-- Implemented frame_extractor — processed 6 FPV videos → 916 frames output
-- Set up cv_toolkit/ directory structure
-- Scraper verified working with ed_session
+- Reviewed SPEC_v001.md for Pi5-specific assumptions
+- Verified Pi5 refs are correctly scoped to onboard inference architecture
+- Confirmed no changes needed; spec remains valid for dev environment
 
 ## Next
-Phase 0.2: golden test set — manually label 100–200 frames from extracted frames, then prepare for Grounding DINO auto-labeling pipeline.
+Phase 0.2: manually label 100–200 frames from extracted 916 frames for golden test set.
 
 ## Blockers
 None.
@@ -29,6 +28,7 @@ None.
 - `mcp/` shadows PyPI `mcp` — always use importlib outside mcp/
 - Bot fallback: Claude fails → plain summary, never crashes
 - `requires_detector` marker: skip detector-dependent tests with `-m "not requires_detector"`
+- cv_toolkit frame extraction complete: 916 frames ready for labeling
 
 ## How to resume
 ```bash
