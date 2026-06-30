@@ -120,7 +120,7 @@ Key fix: `is_duration_ok(0) → True` — TG metadata often returns duration=0 f
 ## cv_toolkit
 
 ```yaml
-last_touched: 2026-06-30
+last_touched: 2026-07-01
 tags: [labeling, frame-extraction, preparation]
 status: active
 ```

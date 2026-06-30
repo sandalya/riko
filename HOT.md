@@ -1,16 +1,16 @@
 ---
 project: drone-recon
-updated: 2026-06-30
+updated: 2026-07-01
 ---
 # HOT
 
 ## Now
-Audited SPEC_v001.md during workspace migration (Pi5→Beelink SER5) — confirmed Pi5 refs are edge-platform architecture decisions for onboard inference, not dev-server infra. Left unchanged intentionally.
+Audited SPEC_v001.md during workspace migration (Pi5→Beelink SER5) — confirmed Pi5 refs are edge-platform architecture decisions for onboard inference, not dev-server infra; left unchanged intentionally.
 
 ## Last done
-- Reviewed SPEC_v001.md for Pi5-specific assumptions
-- Verified Pi5 refs are correctly scoped to onboard inference architecture
-- Confirmed no changes needed; spec remains valid for dev environment
+- Reviewed SPEC_v001.md Pi5 references in context of workspace migration
+- Verified SPEC reflects onboard inference design, not development infrastructure
+- Confirmed no code changes needed in drone-recon repository
 
 ## Next
 Phase 0.2: manually label 100–200 frames from extracted 916 frames for golden test set.
@@ -29,6 +29,7 @@ None.
 - Bot fallback: Claude fails → plain summary, never crashes
 - `requires_detector` marker: skip detector-dependent tests with `-m "not requires_detector"`
 - cv_toolkit frame extraction complete: 916 frames ready for labeling
+- SPEC_v001.md: Pi5 refs are design intent for edge inference, separate from dev-server workspace (Pi5→Beelink SER5)
 
 ## How to resume
 ```bash
