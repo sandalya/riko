@@ -1,5 +1,10 @@
 logs/*.log
 data/input/
 data/output/
+data/scraper/
+cv_toolkit/datasets/raw_frames/
+venv/
+detector/models/*.pt
+*.pt
 **/__pycache__/
 *.pyc
