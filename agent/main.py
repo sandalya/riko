@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 import anthropic
 load_dotenv()
 
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 
 # Load mcp/server.py by explicit path — avoids the PyPI `mcp` package shadowing
 # our local mcp/ directory when agent/main.py is run as a script (sys.path[0] = agent/).

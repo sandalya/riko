@@ -49,8 +49,8 @@ Note: `mcp/` shadows PyPI `mcp`. Always load via `importlib.util.spec_from_file_
 ## Claude Agent
 
 ```yaml
-last_touched: 2026-06-28
-status: done, live tested
+last_touched: 2026-07-02
+status: done, model updated to claude-sonnet-5
 model: claude-sonnet-4-6
 ```
 

@@ -20,7 +20,7 @@ from core.config import (
 
 log = logging.getLogger("bot.client")
 
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 _SYSTEM_PROMPT: str | None = None
 
 

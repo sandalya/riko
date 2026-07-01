@@ -5,15 +5,15 @@ updated: 2026-07-02
 # HOT
 
 ## Now
-Migrated to English thinking language: translated PROMPT.md to English, updated CLAUDE.md Rule 1 with explicit principle — model thinks in English, responds to user in Ukrainian based on input language.
+Updated Claude model from claude-sonnet-4-6 to claude-sonnet-5 in agent/main.py and bot/client.py as part of workspace-wide model version sweep.
 
 ## Last done
-- Translated PROMPT.md from Ukrainian to English
-- Updated CLAUDE.md Rule 1: added explicit principle for language model thinking (English) vs. response language (user's input language)
-- No code changes; infrastructure already mostly English (HOT/WARM/COLD/agent prompts)
+- Updated Claude model ID in agent/main.py
+- Updated Claude model ID in bot/client.py
+- Verified both files now reference claude-sonnet-5
 
 ## Next
-Phase 0.2 — manually label 100–200 frames from 916 extracted frames for golden test set.
+Continue with other projects.
 
 ## Blockers
 None.
