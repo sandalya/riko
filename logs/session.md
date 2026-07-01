@@ -1,5 +1,21 @@
 # Session Log — drone-recon
 
+### [2026-07-01 20:13] Action: Active-learning loop Phase 0.1 — CVAT self-hosted install
+- Why: `docs/drone-recon-active-learning-concept_v002.md` Phase 0.1 — prove the review
+  round-trip mechanics; CVAT is the review UI (no custom labeling UI, no Nuclio).
+- Result: Docker installed via official apt repo (not curl script). CVAT (`cvat-ai/cvat`,
+  develop branch) cloned into `infra/cvat-server/` (gitignored). `docker-compose.yml`
+  locally slimmed to core-only: removed ClickHouse/Vector/Grafana analytics stack and
+  their hard `depends_on` on `cvat_server` + all 7 workers, set `CVAT_ANALYTICS: 0`,
+  remapped traefik port 8080→8081 (8080 taken by code-server). 14 containers up, no
+  analytics containers. RAM after up: 5.6Gi used / 5.5Gi available of 11Gi — workable.
+  Project `drone-recon` (id=1) created with the 6 frozen taxonomy labels in exact order
+  (pidar, military_vehicle, vehicle, fpv_drone, artillery, structure) — verified via
+  `GET /api/labels?project_id=1`, not just UI screenshot. Admin login (`sashok`) confirmed
+  working via API.
+- Next: Hard stop per doc — owner verifies in browser, then Phase 0.2 (auto-labeler →
+  COCO exporter, `cv_toolkit/labeling/coco_export.py`).
+
 ### [2026-06-27 23:50] Action: Full checkpoint after live test
 - Why: Зафіксувати перший успішний end-to-end тест
 - Result: HOT/WARM/COLD оновлено, пам'ять записана

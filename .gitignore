@@ -8,3 +8,4 @@ detector/models/*.pt
 *.pt
 **/__pycache__/
 *.pyc
+infra/cvat-server/
