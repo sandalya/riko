@@ -120,13 +120,16 @@ Key fix: `is_duration_ok(0) → True` — TG metadata often returns duration=0 f
 ## cv_toolkit
 
 ```yaml
-last_touched: 2026-07-01
+last_touched: 2026-07-03
 tags: [labeling, frame-extraction, preparation]
-status: active
+status: active — Phase 0.1 CVAT infra ready, Phase 0.2 auto-labeler next
 ```
 
 Framework for dataset curation and annotation:
 - `frame_extractor.py` — extract frames from 6 FPV videos → 916 frames output
-- Golden test set: manual labeling of 100–200 frames (Phase 0.2)
-- Integration with Grounding DINO for auto-labeling pipeline
+- **Phase 0.1 (DONE)**: CVAT self-hosted (docker, core-only, port 8081) + drone-recon project + 6 frozen taxonomy labels (verified via REST API)
+- **Phase 0.2 (IN PROGRESS)**: Auto-labeler integration with taxonomy mapping → COCO exporter (`cv_toolkit/labeling/coco_export.py`) → unit test on ~5-frame fixture
+- Integration with Grounding DINO for auto-labeling pipeline (future)
 - Taxonomy v0 locked: 6 object classes
+
+CVAT infra (gitignored): `infra/cvat-server/` (vendored clone), `CVAT_HOST=192.168.72.191:8081` in `.env`
