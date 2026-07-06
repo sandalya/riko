@@ -1,21 +1,22 @@
 ---
 project: drone-recon
-updated: 2026-07-03
+updated: 2026-07-06
 ---
 # HOT
 
 ## Now
-Phase 0.1 complete: installed CVAT self-hosted (docker, core-only), configured project with 6 frozen taxonomy labels, verified via REST API. Ready for auto-labeling phase.
+Completed Phase 0.2: built cv_toolkit/labeling/coco_export.py to convert auto-labeler raw output (label + confidence + bbox) into taxonomy-mapped COCO JSON, inverting grounding_dino.yaml prompts for class mapping.
 
 ## Last done
-- Installed CVAT self-hosted (docker, apt-repo) on port 8081, dropped ClickHouse/Vector/Grafana
-- Created drone-recon project with 6 frozen taxonomy labels in exact order
-- Verified labels via REST API (not just UI)
-- Committed infra changes to repo (3f8a30b)
-- RAM profile: 5.6Gi used / 5.5Gi available
+- Implemented `coco_export.py` — inverts `cv_toolkit/configs/grounding_dino.yaml` prompt lists (phrase → class name) and maps via `taxonomy.yaml`
+- Converts xyxy → xywh bbox format
+- Drops unmatched labels with logging
+- Added 5-frame fixture and 6 unit tests (all green)
+- Updated requirements.txt with PyYAML
+- Verified 25/25 existing non-detector tests still pass
 
 ## Next
-Phase 0.2: Build auto-labeler → COCO exporter (cv_toolkit/labeling/coco_export.py), map taxonomy, unit test on ~5-frame fixture.
+Phase 0.3: CVAT ingestion bridge — `cv_toolkit/labeling/cvat_push.py` (cvat-sdk). Creates a task under project `drone-recon`, uploads frame images + the 0.2 COCO file. Exit: opening the task in browser shows pre-placed boxes on the correct frames.
 
 ## Blockers
 None.
@@ -34,6 +35,7 @@ None.
 - SPEC_v001.md: Pi5 refs are design intent for edge inference, separate from dev-server workspace (Pi5→Beelink SER5)
 - infra/cvat-server/ is gitignored (vendored CVAT clone)
 - CVAT_HOST=192.168.72.191 in infra .env
+- Grounding DINO model wrapper deferred (heavy GPU deps); Phase 0.2 only defines/consumes raw-output contract
 
 ## How to resume
 ```bash
@@ -66,5 +68,6 @@ CVAT_HOST=192.168.72.191 — access via http://192.168.72.191:8081
 | **Phase 2** | MCP Server + 4 tools | ✅ Done |
 | **Phase 3** | Claude Agent + bot wired | ✅ Done |
 | **Phase 0.1** | CVAT self-hosted + taxonomy config | ✅ Done |
-| **Phase 0.2** | Auto-labeler + COCO exporter | 🔄 In Progress |
+| **Phase 0.2** | Auto-labeler → COCO exporter | ✅ Done |
+| **Phase 0.3** | CVAT ingestion bridge (cvat_push.py) | 🔄 Next |
 | **Phase 4** | GPS Level 1 + deploy | ⬜ Pending |

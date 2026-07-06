@@ -1,0 +1,44 @@
+{
+  "images": [
+    {
+      "file_name": "frame_000001.jpg",
+      "width": 640,
+      "height": 480,
+      "detections": [
+        {"label": "soldier", "confidence": 0.81, "bbox": [100.0, 50.0, 180.0, 220.0]},
+        {"label": "civilian car", "confidence": 0.67, "bbox": [300.0, 200.0, 420.0, 280.0]}
+      ]
+    },
+    {
+      "file_name": "frame_000002.jpg",
+      "width": 640,
+      "height": 480,
+      "detections": [
+        {"label": "BMP infantry fighting vehicle", "confidence": 0.74, "bbox": [50.0, 60.0, 250.0, 200.0]}
+      ]
+    },
+    {
+      "file_name": "frame_000003.jpg",
+      "width": 640,
+      "height": 480,
+      "detections": []
+    },
+    {
+      "file_name": "frame_000004.jpg",
+      "width": 640,
+      "height": 480,
+      "detections": [
+        {"label": "FPV drone", "confidence": 0.55, "bbox": [400.0, 30.0, 460.0, 90.0]},
+        {"label": "dog", "confidence": 0.42, "bbox": [10.0, 10.0, 40.0, 40.0]}
+      ]
+    },
+    {
+      "file_name": "frame_000005.jpg",
+      "width": 640,
+      "height": 480,
+      "detections": [
+        {"label": "trench", "confidence": 0.63, "bbox": [0.0, 300.0, 640.0, 480.0]}
+      ]
+    }
+  ]
+}

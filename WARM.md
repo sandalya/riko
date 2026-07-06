@@ -120,16 +120,17 @@ Key fix: `is_duration_ok(0) → True` — TG metadata often returns duration=0 f
 ## cv_toolkit
 
 ```yaml
-last_touched: 2026-07-03
+last_touched: 2026-07-06
 tags: [labeling, frame-extraction, preparation]
-status: active — Phase 0.1 CVAT infra ready, Phase 0.2 auto-labeler next
+status: active — Phase 0.2 COCO exporter done, Phase 0.3 CVAT ingestion bridge next
 ```
 
 Framework for dataset curation and annotation:
 - `frame_extractor.py` — extract frames from 6 FPV videos → 916 frames output
 - **Phase 0.1 (DONE)**: CVAT self-hosted (docker, core-only, port 8081) + drone-recon project + 6 frozen taxonomy labels (verified via REST API)
-- **Phase 0.2 (IN PROGRESS)**: Auto-labeler integration with taxonomy mapping → COCO exporter (`cv_toolkit/labeling/coco_export.py`) → unit test on ~5-frame fixture
-- Integration with Grounding DINO for auto-labeling pipeline (future)
+- **Phase 0.2 (DONE)**: `cv_toolkit/labeling/coco_export.py` — auto-labeler raw output (prompt-derived label + score + bbox) → taxonomy-mapped COCO. Inverts `cv_toolkit/configs/grounding_dino.yaml` prompts instead of a separate mapping file. Unmatched labels dropped+logged. 6 unit tests on 5-frame fixture, all green.
+- **Phase 0.3 (NEXT)**: CVAT ingestion bridge — `cv_toolkit/labeling/cvat_push.py` (cvat-sdk), creates task + uploads frames + COCO file
+- Integration with Grounding DINO for auto-labeling pipeline itself (the actual model wrapper) still not built — deferred; 0.2 only defines/consumes the raw-output contract
 - Taxonomy v0 locked: 6 object classes
 
 CVAT infra (gitignored): `infra/cvat-server/` (vendored clone), `CVAT_HOST=192.168.72.191:8081` in `.env`

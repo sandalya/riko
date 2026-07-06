@@ -1,5 +1,21 @@
 # Session Log — drone-recon
 
+### [2026-07-06] Action: Active-learning loop Phase 0.2 — auto-labeler COCO exporter
+- Why: `docs/drone-recon-active-learning-concept_v002.md` Phase 0.2 — convert open-vocab
+  auto-labeler raw output (prompt-derived label + score + bbox) into valid COCO with
+  taxonomy-mapped category IDs, so CVAT tasks can be pre-annotated (0.3).
+- Result: `cv_toolkit/labeling/coco_export.py` — inverts existing
+  `cv_toolkit/configs/grounding_dino.yaml` prompt lists (phrase → class name) instead of
+  a redundant new mapping file; class name → frozen ID via `taxonomy.yaml`. Unmatched
+  labels dropped + logged (not "unknown"). xyxy→xywh bbox conversion. CLI:
+  `python -m cv_toolkit.labeling.coco_export --raw <raw.json> --output <coco.json>`.
+  Added PyYAML to requirements.txt (was venv-only, undeclared). New 5-frame fixture
+  `tests/fixtures/labeling/raw_detections_5frame.json` + `tests/test_coco_export.py`
+  (6 tests: taxonomy frozen order, category ID mapping, bbox conversion, unmatched-label
+  drop, empty-detections frame). 6/6 new + 25/25 existing (non-detector) tests green.
+- Next: Phase 0.3 — `cv_toolkit/labeling/cvat_push.py` (cvat-sdk): create CVAT task,
+  upload frames + this COCO file, verify pre-placed boxes show in browser.
+
 ### [2026-07-01 20:13] Action: Active-learning loop Phase 0.1 — CVAT self-hosted install
 - Why: `docs/drone-recon-active-learning-concept_v002.md` Phase 0.1 — prove the review
   round-trip mechanics; CVAT is the review UI (no custom labeling UI, no Nuclio).
