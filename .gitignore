@@ -1,8 +1,10 @@
+.env
 logs/*.log
 data/input/
 data/output/
 data/scraper/
 cv_toolkit/datasets/raw_frames/
+cv_toolkit/datasets/labels/
 venv/
 detector/models/*.pt
 *.pt
