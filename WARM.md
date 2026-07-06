@@ -5,7 +5,7 @@
 ## Detector Service
 
 ```yaml
-last_touched: 2026-06-28
+last_touched: 2026-07-06
 status: done, live
 port: 8000
 model: yolo11n.pt (COCO, 80 classes)
@@ -21,7 +21,7 @@ Model swap: only `detector/config.py → MODEL_PATH`
 ## Telegram Bot
 
 ```yaml
-last_touched: 2026-06-28
+last_touched: 2026-07-06
 status: done, agent wired
 ```
 
@@ -34,7 +34,7 @@ Config: `.env` → `BOT_TOKEN`, `DETECTOR_URL`, `ANTHROPIC_API_KEY`
 ## MCP Server
 
 ```yaml
-last_touched: 2026-06-28
+last_touched: 2026-07-06
 status: done
 ```
 
@@ -49,7 +49,7 @@ Note: `mcp/` shadows PyPI `mcp`. Always load via `importlib.util.spec_from_file_
 ## Claude Agent
 
 ```yaml
-last_touched: 2026-07-02
+last_touched: 2026-07-06
 status: done, model updated to claude-sonnet-5
 model: claude-sonnet-4-6
 ```
@@ -66,7 +66,7 @@ Live test: `photo_20260627_234103.jpg` → person 77.6% → Threat Level: Medium
 ## Eval Framework
 
 ```yaml
-last_touched: 2026-06-28
+last_touched: 2026-07-06
 status: done, 28/28 green
 ```
 
@@ -96,7 +96,7 @@ pytest.ini: `requires_detector` marker registered
 ## Scraper
 
 ```yaml
-last_touched: 2026-06-28
+last_touched: 2026-07-06
 status: done, import verified, not yet run on real TG
 ```
 
@@ -122,15 +122,17 @@ Key fix: `is_duration_ok(0) → True` — TG metadata often returns duration=0 f
 ```yaml
 last_touched: 2026-07-06
 tags: [labeling, frame-extraction, preparation]
-status: active — Phase 0.2 COCO exporter done, Phase 0.3 CVAT ingestion bridge next
+status: active — Phase 0.3 + 0.4 complete (cvat_push.py, cvat_pull.py, category_id offset fix); Phase 1.1 (hand-label golden/val) next
 ```
 
 Framework for dataset curation and annotation:
 - `frame_extractor.py` — extract frames from 6 FPV videos → 916 frames output
 - **Phase 0.1 (DONE)**: CVAT self-hosted (docker, core-only, port 8081) + drone-recon project + 6 frozen taxonomy labels (verified via REST API)
 - **Phase 0.2 (DONE)**: `cv_toolkit/labeling/coco_export.py` — auto-labeler raw output (prompt-derived label + score + bbox) → taxonomy-mapped COCO. Inverts `cv_toolkit/configs/grounding_dino.yaml` prompts instead of a separate mapping file. Unmatched labels dropped+logged. 6 unit tests on 5-frame fixture, all green.
-- **Phase 0.3 (NEXT)**: CVAT ingestion bridge — `cv_toolkit/labeling/cvat_push.py` (cvat-sdk), creates task + uploads frames + COCO file
-- Integration with Grounding DINO for auto-labeling pipeline itself (the actual model wrapper) still not built — deferred; 0.2 only defines/consumes the raw-output contract
+- **Phase 0.3 + 0.4 (DONE)**: `cv_toolkit/labeling/cvat_push.py` (cvat-sdk) — creates CVAT task, uploads frames, imports COCO. Fixed critical bug: CVAT rejects category_id=0 → added shift_category_ids() with +1 offset (upload path only, taxonomy.yaml untouched). `cv_toolkit/labeling/cvat_pull.py` — exports task annotations as Ultralytics YOLO format, extracts per-frame labels. Full round-trip smoke test passed: real TG video → frame 69 → hand-annotated box → CVAT (task id=3) → owner corrected in UI → pulled back with updated coordinates verified.
+- **Phase 1.1 (NEXT)**: Hand-label frozen golden/val set (~100–150 frames, easy classes: vehicle/military_vehicle/structure) from scratch in CVAT — this is the one place auto-labeling is forbidden. Freeze into immutable `golden/` dir, never mixed into train pool.
+- Integration with Grounding DINO for auto-labeling pipeline itself (the actual model wrapper) still not built — deferred; Phase 0.2 only defines/consumes the raw-output contract
 - Taxonomy v0 locked: 6 object classes
+- Tests: 8 new (test_coco_export.py + test_cvat_pull.py with real CVAT export zip fixture); 27/27 non-detector tests green. cvat-sdk added to requirements.txt.
 
 CVAT infra (gitignored): `infra/cvat-server/` (vendored clone), `CVAT_HOST=192.168.72.191:8081` in `.env`

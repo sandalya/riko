@@ -121,6 +121,23 @@ def build_coco(
     return coco, dropped
 
 
+def shift_category_ids(coco: dict[str, Any], offset: int) -> dict[str, Any]:
+    """Return a copy of `coco` with all category ids shifted by `offset`.
+
+    CVAT's COCO importer rejects category_id == 0 ("annotation has no label") —
+    COCO tooling conventionally reserves id 0. Our frozen taxonomy.yaml IDs start
+    at 0 (they're the source of truth for training), so the CVAT ingestion bridge
+    (cvat_push.py) shifts by +1 only for the upload; taxonomy IDs are untouched
+    everywhere else.
+    """
+    shifted = json.loads(json.dumps(coco))  # deep copy
+    for cat in shifted["categories"]:
+        cat["id"] += offset
+    for ann in shifted["annotations"]:
+        ann["category_id"] += offset
+    return shifted
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--raw", required=True, help="Raw auto-labeler output JSON")
