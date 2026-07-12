@@ -4,7 +4,8 @@
     "allow": [
       "Bash(nvidia-smi)",
       "Bash(yolo *)",
-      "Bash(venv/bin/python *)"
+      "Bash(venv/bin/python *)",
+      "Bash(git add *)"
     ],
     "additionalDirectories": [
       "Y:/CV/"

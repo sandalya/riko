@@ -5,19 +5,15 @@ updated: 2026-07-14
 # HOT
 
 ## Now
-Added auto-labeling batch pipeline (cv_toolkit/pipeline/auto_ingest_batch.py) that detects across 5 random approved videos, ranks frames by confidence, pushes top-8/video to CVAT (task auto-v0-round1, id=7, 40 frames), and owner reviewed/corrected all 40. Established golden vs train_pool split: golden = human-reviewed (manual or auto-corrected); train_pool = raw unreviewed detector output. Moved 40 reviewed auto-frames into data/golden/raw/batch_003/ and added data/golden/provenance.json tracking batch source + CVAT task metadata.
+Parked eval-pipeline design discussion. Captured full architecture for model regression testing (locked eval set, freeze_eval_set.py, auto_ingest guard, run_eval.py) — no code written yet.
 
 ## Last done
-- Created cv_toolkit/pipeline/auto_ingest_batch.py — batch detection on 5 random videos from data/scraper/approved/, confidence-ranked frame selection (top-8/video), CVAT task creation (auto-v0-round1, id=7)
-- Owner reviewed all 40 frames in CVAT task id=7, corrected 1 frame, pulled annotations (11/40 frames with boxes, 6 pidar + 5 military_vehicle)
-- Reorganized golden set structure: batch_001 (23), batch_002 (72), batch_003 (11 labeled frames from auto-round1) → 106 total frames, 214 boxes
-- Added data/golden/provenance.json: source metadata (manual vs auto_reviewed) + CVAT task id/name per batch
-- Scaffolded data/train_pool/{raw,labels,manifest.json} for unreviewed detector snapshots
-- Wired auto_ingest_batch.py to persist raw per-frame detections in train_pool before CVAT push
-- Data architecture: golden = anything reviewed; train_pool = never auto-merged into golden
+- Documented eval pipeline architecture: locked eval video set (10–20 videos), ground-truth labeling in CVAT, per-model result JSON snapshots
+- Defined three-piece implementation plan: freeze_eval_set.py, auto_ingest_batch.py guard, run_eval.py
+- Identified open decisions: IoU threshold, false-positive scoring outside golden classes, mAP inclusion
 
 ## Next
-Continue growing golden set (target ~100–150 frames total); decide when to freeze golden/val split; run more auto_ingest_batch.py rounds into train_pool and selectively promote reviewed subsets into golden.
+Resume eval pipeline design: decide IoU threshold, false-positive scoring outside golden classes, then implement freeze_eval_set.py / auto_ingest guard / run_eval.py.
 
 ## Blockers
 None.
@@ -27,6 +23,38 @@ None.
 - Target detection classes for fine-tuned model?
 - Drone FC for GPS logs (Betaflight / ArduPilot / other)?
 - Deploy: VPS or Beelink + tunnel?
+- **[EVAL PIPELINE]** IoU threshold for detection match (ground truth vs. detector output)?
+- **[EVAL PIPELINE]** How to score false positives outside golden classes (pidar, military_vehicle)?
+- **[EVAL PIPELINE]** Include mAP metric alongside precision/recall?
+
+## Eval pipeline design (parked, not started)
+
+Discussed 2026-07-14, not yet implemented — resume here. Goal: after each detector model update, run a fixed benchmark to see if it improved/regressed, comparably across runs.
+
+Decisions made:
+- Eval video set must be **locked**, not grown freely — a growing set breaks comparability between model versions (can't tell "model got worse" from "eval set got harder"). Can still expand later, but only as an explicit new version (eval_set_v2), never silent drift.
+- Size: ~10–20 videos, sampled from `data/scraper/approved/`.
+- Scope: detection metrics only for now (precision/recall per class: `pidar`, `military_vehicle`), not full pipeline/agent eval.
+- Ground truth: hand-labeled by owner in CVAT, same workflow as `data/golden/` (see `cv_toolkit/labeling/cvat_push.py` / `cvat_pull.py`).
+
+Proposed structure (not built yet):
+```
+data/eval/
+├── manifest.json   ← locked: video filename + sha256 hash + date frozen + eval_set version
+├── raw/            ← extracted frames, frozen (same pattern as data/golden/raw/batch_*)
+├── labels/         ← YOLO .txt ground truth pulled from CVAT
+└── results/        ← one JSON per eval run (date + model tag), so runs diff against each other
+```
+
+Planned pieces (none written yet):
+1. `cv_toolkit/eval/freeze_eval_set.py` — one-time: sample N videos (seeded), write manifest.json with sha256 hashes, extract frames into `raw/` with no pre-placed boxes (owner labels from scratch, avoids detector bias in ground truth).
+2. Guard in `cv_toolkit/pipeline/auto_ingest_batch.py` (and any future manual video-picking) — read `data/eval/manifest.json`, exclude those filenames from train/auto-label candidate pools. **Critical**: without this, eval videos could leak into training and invalidate the whole benchmark.
+3. `cv_toolkit/eval/run_eval.py --model-tag <name>` — run current detector over `data/eval/raw/`, IoU-match against `data/eval/labels/`, compute precision/recall per class, write `data/eval/results/<date>_<model-tag>.json`.
+
+Still to decide when we resume:
+- IoU threshold for counting a detection as a "match" against ground truth.
+- How to score false positives that fall outside the two golden classes (ignore vs. penalize).
+- Whether to eventually add mAP alongside precision/recall.
 
 ## Reminders
 - YOLO11n (COCO nano) auto-labeling: only 5/40 frames initially had detector-mapped boxes, but manual review showed auto frame *selection* (confidence ranking) works better than raw box *quality* for this domain — most frames legitimately needed added boxes (military_vehicle class unknown to base model)
@@ -87,4 +115,5 @@ CVAT_HOST=192.168.72.191:8081 — access via http://192.168.72.191:8081
 | **Phase 0.2** | Auto-labeler → COCO exporter | ✅ Done |
 | **Phase 0.3 + 0.4** | CVAT ingestion (cvat_push.py) + export (cvat_pull.py) | ✅ Done |
 | **Phase 1.1** | Hand-label golden/val set + auto-labeling pipeline + data split | 🔄 In progress |
-| **Phase 4** | GPS Level 1 + deploy | ⬜ Pending |
+| **Phase 4 — Eval Pipeline** | Locked eval set + freeze/run/diff scripts | ⬜ Pending (design parked, resume next) |
+| **Phase 5** | GPS Level 1 + deploy | ⬜ Pending |
