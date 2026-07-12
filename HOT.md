@@ -1,21 +1,23 @@
 ---
 project: drone-recon
-updated: 2026-07-13
+updated: 2026-07-14
 ---
 # HOT
 
 ## Now
-Created CVAT task golden-v0-round2 (id=6) from batch_002 (72 frames); owner hand-labeled pidar and military_vehicle classes in CVAT UI; cvat_pull.py extracted annotations into data/golden/labels/. Combined golden set now 95 frames with 203 boxes (112 pidar + 91 military_vehicle).
+Added auto-labeling batch pipeline (cv_toolkit/pipeline/auto_ingest_batch.py) that detects across 5 random approved videos, ranks frames by confidence, pushes top-8/video to CVAT (task auto-v0-round1, id=7, 40 frames), and owner reviewed/corrected all 40. Established golden vs train_pool split: golden = human-reviewed (manual or auto-corrected); train_pool = raw unreviewed detector output. Moved 40 reviewed auto-frames into data/golden/raw/batch_003/ and added data/golden/provenance.json tracking batch source + CVAT task metadata.
 
 ## Last done
-- Created batch_002 CVAT task (id=6, 72 frames, no pre-placed boxes)
-- Hand-labeled 64/72 frames with 2 classes (pidar, military_vehicle) in CVAT UI
-- Confirmed 8 frames as empty (no targets)
-- Exported batch_002 annotations via cvat_pull.py into data/golden/labels/
-- Merged with batch_001 round 1: total 95 frames, 203 boxes across 2 classes
+- Created cv_toolkit/pipeline/auto_ingest_batch.py — batch detection on 5 random videos from data/scraper/approved/, confidence-ranked frame selection (top-8/video), CVAT task creation (auto-v0-round1, id=7)
+- Owner reviewed all 40 frames in CVAT task id=7, corrected 1 frame, pulled annotations (11/40 frames with boxes, 6 pidar + 5 military_vehicle)
+- Reorganized golden set structure: batch_001 (23), batch_002 (72), batch_003 (11 labeled frames from auto-round1) → 106 total frames, 214 boxes
+- Added data/golden/provenance.json: source metadata (manual vs auto_reviewed) + CVAT task id/name per batch
+- Scaffolded data/train_pool/{raw,labels,manifest.json} for unreviewed detector snapshots
+- Wired auto_ingest_batch.py to persist raw per-frame detections in train_pool before CVAT push
+- Data architecture: golden = anything reviewed; train_pool = never auto-merged into golden
 
 ## Next
-Continue growing golden set toward Phase 1.1 target (~100–150 frames); once satisfied, freeze golden/val split and start first fine-tune cycle on custom military-vehicle model.
+Continue growing golden set (target ~100–150 frames total); decide when to freeze golden/val split; run more auto_ingest_batch.py rounds into train_pool and selectively promote reviewed subsets into golden.
 
 ## Blockers
 None.
@@ -27,12 +29,13 @@ None.
 - Deploy: VPS or Beelink + tunnel?
 
 ## Reminders
-- YOLO11n (COCO nano) struggles with small objects at drone altitude → confirms need for custom model
-- Test artifacts (task id=5, data/labeling/labels_test1) are separate from golden/ and production train pool
-- Golden batches follow naming: batch_001/, batch_002/, etc. under data/golden/raw/
-- Round 1 (batch_001, 23 frames) + round 2 (batch_002, 72 frames) both live flat in data/golden/labels/ (unique vlcsnap timestamp filenames, no collisions)
-- CVAT tasks: id=4 round1, id=6 round2. Task id=5 remains a separate active-learning-loop test artifact.
-- `.env` must contain `ANTHROPIC_API_KEY`, `BOT_TOKEN`, `DETECTOR_URL`, `TG_API_ID`, `TG_API_HASH`
+- YOLO11n (COCO nano) auto-labeling: only 5/40 frames initially had detector-mapped boxes, but manual review showed auto frame *selection* (confidence ranking) works better than raw box *quality* for this domain — most frames legitimately needed added boxes (military_vehicle class unknown to base model)
+- YOLO11n struggles with small objects at drone altitude → confirms need for custom model fine-tune
+- Data architecture: golden/labels/ stays flat (unique vlcsnap/video-stem filenames, no collisions); provenance.json is source of truth for batch origin, not directory structure
+- Golden batches: batch_001/ (23 frames, manual), batch_002/ (72 frames, manual), batch_003/ (11 frames, auto-reviewed). Combined: 106 frames, 214 boxes
+- Train_pool: raw unreviewed detector snapshots, independent of CVAT push status — future runs get an unreviewed record
+- CVAT tasks: id=4 (round1 manual), id=6 (round2 manual), id=7 (auto-v0-round1, 40 frames reviewed)
+- `.env` must contain `ANTHROPIC_API_KEY`, `BOT_TOKEN`, `DETECTOR_URL`, `TG_API_ID`, `TG_API_HASH`, `CVAT_HOST`
 - `mcp/` shadows PyPI `mcp` — always use importlib outside mcp/
 - Bot fallback: Claude fails → plain summary, never crashes
 - `requires_detector` marker: skip detector-dependent tests with `-m "not requires_detector"`
@@ -52,6 +55,9 @@ venv/bin/uvicorn detector.main:app --port 8000
 
 # Terminal 2 — bot
 venv/bin/python3 main.py
+
+# Auto-labeling batch run
+venv/bin/python cv_toolkit/pipeline/auto_ingest_batch.py --num-videos 5 --top-frames 8 --task-name auto-v0-round2
 
 # Frame extraction (if needed)
 venv/bin/python cv_toolkit/frame_extractor.py --input <video_path> --output <frames_dir>
@@ -80,5 +86,5 @@ CVAT_HOST=192.168.72.191:8081 — access via http://192.168.72.191:8081
 | **Phase 0.1** | CVAT self-hosted + taxonomy config | ✅ Done |
 | **Phase 0.2** | Auto-labeler → COCO exporter | ✅ Done |
 | **Phase 0.3 + 0.4** | CVAT ingestion (cvat_push.py) + export (cvat_pull.py) | ✅ Done |
-| **Phase 1.1** | Hand-label golden/val set (~100–150 frames) | 🔄 Next |
+| **Phase 1.1** | Hand-label golden/val set + auto-labeling pipeline + data split | 🔄 In progress |
 | **Phase 4** | GPS Level 1 + deploy | ⬜ Pending |

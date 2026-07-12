@@ -1,0 +1,30 @@
+{
+  "batch_001": {
+    "source": "manual",
+    "description": "Hand-picked frames from video, boxes drawn from scratch in CVAT.",
+    "cvat_task_id": 4,
+    "cvat_task_name": "golden-v0-round1",
+    "frame_count": 23
+  },
+  "batch_002": {
+    "source": "manual",
+    "description": "Hand-picked frames from video, boxes drawn from scratch in CVAT.",
+    "cvat_task_id": 6,
+    "cvat_task_name": "golden-v0-round2",
+    "frame_count": 72
+  },
+  "batch_003": {
+    "source": "auto_reviewed",
+    "description": "Frames auto-selected by detector confidence ranking (YOLO11n COCO nano) across 5 videos; owner reviewed and corrected every frame in CVAT before merging into golden.",
+    "cvat_task_id": 7,
+    "cvat_task_name": "auto-v0-round1",
+    "frame_count": 40,
+    "source_videos": [
+      "12.05.2026 -422.mp4",
+      "16.06.2026 mix.mp4",
+      "10.04.2026 mix.mp4",
+      "IMG_4398.MP4",
+      "08.04.2026 422-2.mp4"
+    ]
+  }
+}
