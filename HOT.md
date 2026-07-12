@@ -1,24 +1,23 @@
 ---
 project: drone-recon
-updated: 2026-07-06
+updated: 2026-07-12
 ---
 # HOT
 
 ## Now
-Completed Phase 0.3 + 0.4: built cvat_push.py (creates CVAT task, uploads frames + COCO via cvat-sdk) and cvat_pull.py (exports task annotations as Ultralytics YOLO format). Fixed critical bug: CVAT rejects category_id=0, added shift_category_ids() offset (+1) only on upload path. Ran full round-trip smoke test with real TG video, confirmed annotations round-trip correctly. Also discovered and fixed security issue: .env was committed to git, now gitignored (commit c606300).
+Fixed requirements.txt to track all ~18 direct third-party dependencies (reconciled against pip freeze); backfilled logs/session.md with 11 missing entries from git history (2026-06-28 onwards); committed previously uncommitted work (bot/client.py CVAT push flow, cv_toolkit/pipeline/ingest_frame.py CLI, data/labeling frames); set up direnv (.envrc) for shell integration; expanded .gitignore to exclude stray char-device entries.
 
 ## Last done
-- Implemented cvat_push.py: task creation, frame upload, COCO import with category_id offset fix
-- Implemented cvat_pull.py: task export, COCO parsing, Ultralytics YOLO dataset format generation
-- Fixed CVAT COCO importer bug: category_id=0 rejection → shift_category_ids() with +1 offset (upload path only)
-- End-to-end smoke test: downloaded real TG video, extracted frame 69, pushed hand-annotated box to CVAT (task id=3), owner corrected in UI, pulled back and verified coordinates changed
-- Discovered .env committed to git since project start (2 commits), added to .gitignore (commit c606300)
-- Added cvat-sdk to requirements.txt
-- Verified 27/27 non-detector tests green (8 new: test_coco_export.py + test_cvat_pull.py with real CVAT export zip fixture)
-- Phase 0 (end-to-end labeling pipeline seam) now complete
+- Reconciled requirements.txt against actual imports and pip freeze exact versions (~18 direct deps now tracked)
+- Backfilled logs/session.md with 11 missing entries pulled from git log since 2026-06-28
+- Committed bot/client.py CVAT push flow: video handler ranks frames by confidence, sends top-8 as TG media group with inline push/skip keyboard, handle_cvat_callback pushes multi-frame COCO via cvat_sdk
+- Committed cv_toolkit/pipeline/ingest_frame.py: single-frame CLI (extract → detect → map → overlay → push to CVAT)
+- Committed data/labeling/ frames to repository
+- Set up direnv (.envrc with dotenv_if_exists .env) for user's shell environment
+- Excluded stray char-device untracked entries via .gitignore update
 
 ## Next
-Phase 1.1: hand-label a frozen golden/val set (~100–150 frames spanning easy classes: vehicle, military_vehicle, structure) from scratch in CVAT—this is the one place auto-labeling is forbidden. Freeze into immutable `golden/` dir, never mixed into train pool.
+Phase 1.1: hand-label a frozen golden/val set (~100–150 frames spanning easy classes: vehicle, military_vehicle, structure) from scratch in CVAT—freeze into immutable `golden/` dir, never mixed into auto-labeled train pool.
 
 ## Blockers
 None.
@@ -40,6 +39,7 @@ None.
 - Grounding DINO model wrapper deferred (heavy GPU deps); Phase 0.2 only defines/consumes raw-output contract
 - CVAT category_id offset: +1 only on cvat_push.py path; taxonomy.yaml (0-5) and coco_export.py untouched
 - .env now properly gitignored; git history contains secrets (filter-repo cleanup deferred as owner's decision)
+- direnv now set up (.envrc); user can load .env into interactive shell without Claude reading it
 
 ## How to resume
 ```bash

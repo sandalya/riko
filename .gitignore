@@ -1,4 +1,5 @@
 .env
+.direnv/
 logs/*.log
 data/input/
 data/output/
@@ -11,3 +12,18 @@ detector/models/*.pt
 **/__pycache__/
 *.pyc
 infra/cvat-server/
+
+# stray char-device entries observed in this worktree (nobody:nogroup -> /dev/null);
+# not real project files, exclude so `git add -A` never picks them up
+/.bashrc
+/.bash_profile
+/.zshrc
+/.zprofile
+/.profile
+/.gitconfig
+/.ripgreprc
+/.idea
+/.vscode
+/.github
+/.mcp.json
+/scripts

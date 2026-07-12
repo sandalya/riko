@@ -120,9 +120,9 @@ Key fix: `is_duration_ok(0) → True` — TG metadata often returns duration=0 f
 ## cv_toolkit
 
 ```yaml
-last_touched: 2026-07-06
+last_touched: 2026-07-12
 tags: [labeling, frame-extraction, preparation]
-status: active — Phase 0.3 + 0.4 complete (cvat_push.py, cvat_pull.py, category_id offset fix); Phase 1.1 (hand-label golden/val) next
+status: active — Phase 0.3 + 0.4 complete (cvat_push.py, cvat_pull.py, category_id offset fix, ingest_frame.py single-frame CLI); Phase 1.1 (hand-label golden/val) next
 ```
 
 Framework for dataset curation and annotation:
