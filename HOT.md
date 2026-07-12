@@ -1,49 +1,46 @@
 ---
 project: drone-recon
-updated: 2026-07-12
+updated: 2026-07-13
 ---
 # HOT
 
 ## Now
-Ran active-learning loop end-to-end on real scraped video: extracted frame 256 from 422_24.05.26.mp4, auto-detected bus (conf 0.83) on a UAZ vehicle, pushed to CVAT (task id=5), owner corrected class to military_vehicle in UI, cvat_pull.py retrieved updated annotation with unchanged coordinates.
+Reorganized golden round-1 raw frames into batch_001/ subdirectory (22 files, 100% rename detected by git); verified no code hardcodes the old path and committed the change to main.
 
 ## Last done
-- Executed ingest_frame.py: extract → detect → map → overlay → push pipeline
-- Frame 256 from 422_24.05.26.mp4 (vehicle detection, YOLO confidence 0.83)
-- CVAT task id=5 created and pushed with auto-labeled frame
-- Owner hand-corrected class: vehicle → military_vehicle in CVAT UI
-- cvat_pull.py verified pull: updated class, bbox coordinates preserved
-- Confirmed round-trip data integrity (Phase 0.3 + 0.4 seamless)
-- Identified YOLO11n limitation: poor detection of small high-altitude drone objects (false positives: bird/train/clock on HUD)
+- Moved data/golden/raw/*.png → data/golden/raw/batch_001/
+- Confirmed CVAT task stores server-side copies (no relinking needed)
+- Verified cvat_pull.py uses Path(name).name (filename only, not full path)
+- Staged as git renames and confirmed no history loss
+- Committed (dc41804) and pushed to main
 
 ## Next
-Custom military-model training or first fine-tune cycle on golden set (23 frames insufficient; need to grow); keep golden set and auto-labeled train pool separate.
+Continue growing the golden set beyond round 1 (currently 23 frames, 2 classes). Phase 1.1 (hand-label golden/val ~100–150 frames) is the active milestone; future batches will use batch_002, batch_003, etc. naming convention.
 
 ## Blockers
 None.
 
 ## Open questions
-- Drone FC for GPS logs? (Betaflight / ArduPilot / other)
-- Target detection classes for fine-tuned model?
-- Deploy: VPS or Beelink + tunnel?
 - How many frames needed for golden set to train robust military-vehicle classifier?
+- Target detection classes for fine-tuned model?
+- Drone FC for GPS logs (Betaflight / ArduPilot / other)?
+- Deploy: VPS or Beelink + tunnel?
 
 ## Reminders
-- YOLO11n (COCO nano) struggles with small objects at drone altitude → confirms need for custom model with SPEC
+- YOLO11n (COCO nano) struggles with small objects at drone altitude → confirms need for custom model
 - Test artifacts (task id=5, data/labeling/labels_test1) are separate from golden/ and production train pool
+- Golden batches follow naming: batch_001/, batch_002/, etc. under data/golden/raw/
 - `.env` must contain `ANTHROPIC_API_KEY`, `BOT_TOKEN`, `DETECTOR_URL`, `TG_API_ID`, `TG_API_HASH`
 - `mcp/` shadows PyPI `mcp` — always use importlib outside mcp/
 - Bot fallback: Claude fails → plain summary, never crashes
 - `requires_detector` marker: skip detector-dependent tests with `-m "not requires_detector"`
 - cv_toolkit frame extraction complete: 916 frames ready for labeling
-- SPEC_v001.md: Pi5 refs are design intent for edge inference, separate from dev-server workspace (Pi5→Beelink SER5)
+- SPEC_v001.md: Pi5 refs are design intent for edge inference, separate from dev-server workspace
 - infra/cvat-server/ is gitignored (vendored CVAT clone)
-- CVAT_HOST=192.168.72.191 in infra .env
-- Grounding DINO model wrapper deferred (heavy GPU deps); Phase 0.2 only defines/consumes raw-output contract
-- CVAT category_id offset: +1 only on cvat_push.py path; taxonomy.yaml (0-5) and coco_export.py untouched
-- .env now properly gitignored; git history contains secrets (filter-repo cleanup deferred as owner's decision)
-- direnv now set up (.envrc); user can load .env into interactive shell without Claude reading it
-- Sandbox fix: uvicorn run via '&'+disown was dying with bash session; resolved with Bash run_in_background:true
+- CVAT_HOST=192.168.72.191:8081 in infra .env
+- Grounding DINO model wrapper deferred; Phase 0.2 only defines/consumes raw-output contract
+- CVAT category_id offset: +1 only on cvat_push.py path; taxonomy.yaml and coco_export.py untouched
+- direnv set up (.envrc); user can load .env into interactive shell
 
 ## How to resume
 ```bash
