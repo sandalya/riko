@@ -13,8 +13,6 @@
       "Bash(git push *)"
     ],
     "deny": [
-      //"Read(./.env)",
-      //"Read(./.env.*)",
       "Read(**/*.session)",
       "Read(**/credentials.json)",
       "Read(**/*.pem)",

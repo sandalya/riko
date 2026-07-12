@@ -3,9 +3,14 @@
   "permissions": {
     "allow": [
       "Bash(nvidia-smi)",
-      "Bash(yolo *)"
+      "Bash(yolo *)",
+      "Bash(venv/bin/python *)"
     ],
-    "additionalDirectories": ["Y:/CV/"]
+    "additionalDirectories": [
+      "Y:/CV/"
+    ]
   },
-  "enabledMcpjsonServers": ["cvat"]
+  "enabledMcpjsonServers": [
+    "cvat"
+  ]
 }

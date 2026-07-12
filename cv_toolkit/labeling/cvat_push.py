@@ -67,15 +67,18 @@ def push_task(
     project_id: int,
     task_name: str,
     frames: list[Path],
-    coco_path: Path,
+    coco_path: Path | None = None,
 ) -> Task:
     spec = {"name": task_name, "project_id": project_id}
+    kwargs = {}
+    if coco_path is not None:
+        kwargs["annotation_path"] = str(coco_path)
+        kwargs["annotation_format"] = ANNOTATION_FORMAT
     return client.tasks.create_from_data(
         spec=spec,
         resources=[str(p) for p in frames],
         resource_type=ResourceType.LOCAL,
-        annotation_path=str(coco_path),
-        annotation_format=ANNOTATION_FORMAT,
+        **kwargs,
     )
 
 
@@ -83,7 +86,10 @@ def main() -> None:
     load_dotenv()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--frames", required=True, help="Directory of frame images")
-    parser.add_argument("--coco", required=True, help="COCO JSON from coco_export.py")
+    parser.add_argument(
+        "--coco",
+        help="COCO JSON from coco_export.py (omit to upload frames with no pre-placed boxes)",
+    )
     parser.add_argument("--task-name", required=True)
     parser.add_argument("--project-id", type=int, default=DEFAULT_PROJECT_ID)
     parser.add_argument("--host", default=os.environ.get("CVAT_HOST", DEFAULT_HOST))
@@ -91,17 +97,25 @@ def main() -> None:
 
     frames = collect_frames(Path(args.frames))
 
-    with _cvat_ready_coco(Path(args.coco)) as cvat_coco_path:
-        with make_client(
-            args.host,
-            credentials=(os.environ["CVAT_USER"], os.environ["CVAT_PASSWORD"]),
-        ) as client:
+    with make_client(
+        args.host,
+        credentials=(os.environ["CVAT_USER"], os.environ["CVAT_PASSWORD"]),
+    ) as client:
+        if args.coco:
+            with _cvat_ready_coco(Path(args.coco)) as cvat_coco_path:
+                task = push_task(
+                    client=client,
+                    project_id=args.project_id,
+                    task_name=args.task_name,
+                    frames=frames,
+                    coco_path=cvat_coco_path,
+                )
+        else:
             task = push_task(
                 client=client,
                 project_id=args.project_id,
                 task_name=args.task_name,
                 frames=frames,
-                coco_path=cvat_coco_path,
             )
 
     print(f"Task created: id={task.id} name={task.name!r} frames={len(frames)}")

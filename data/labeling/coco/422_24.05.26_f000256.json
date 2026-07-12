@@ -1,0 +1,52 @@
+{
+  "images": [
+    {
+      "id": 1,
+      "file_name": "422_24.05.26_f000256.jpg",
+      "width": 1280,
+      "height": 720
+    }
+  ],
+  "annotations": [
+    {
+      "id": 1,
+      "image_id": 1,
+      "category_id": 3,
+      "bbox": [
+        375.1,
+        5.5,
+        554.8,
+        518.4
+      ],
+      "area": 287597.2,
+      "score": 0.8264,
+      "iscrowd": 0
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "pidar"
+    },
+    {
+      "id": 2,
+      "name": "military_vehicle"
+    },
+    {
+      "id": 3,
+      "name": "vehicle"
+    },
+    {
+      "id": 4,
+      "name": "fpv_drone"
+    },
+    {
+      "id": 5,
+      "name": "artillery"
+    },
+    {
+      "id": 6,
+      "name": "structure"
+    }
+  ]
+}

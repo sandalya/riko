@@ -5,19 +5,19 @@ updated: 2026-07-12
 # HOT
 
 ## Now
-Fixed requirements.txt to track all ~18 direct third-party dependencies (reconciled against pip freeze); backfilled logs/session.md with 11 missing entries from git history (2026-06-28 onwards); committed previously uncommitted work (bot/client.py CVAT push flow, cv_toolkit/pipeline/ingest_frame.py CLI, data/labeling frames); set up direnv (.envrc) for shell integration; expanded .gitignore to exclude stray char-device entries.
+Ran active-learning loop end-to-end on real scraped video: extracted frame 256 from 422_24.05.26.mp4, auto-detected bus (conf 0.83) on a UAZ vehicle, pushed to CVAT (task id=5), owner corrected class to military_vehicle in UI, cvat_pull.py retrieved updated annotation with unchanged coordinates.
 
 ## Last done
-- Reconciled requirements.txt against actual imports and pip freeze exact versions (~18 direct deps now tracked)
-- Backfilled logs/session.md with 11 missing entries pulled from git log since 2026-06-28
-- Committed bot/client.py CVAT push flow: video handler ranks frames by confidence, sends top-8 as TG media group with inline push/skip keyboard, handle_cvat_callback pushes multi-frame COCO via cvat_sdk
-- Committed cv_toolkit/pipeline/ingest_frame.py: single-frame CLI (extract → detect → map → overlay → push to CVAT)
-- Committed data/labeling/ frames to repository
-- Set up direnv (.envrc with dotenv_if_exists .env) for user's shell environment
-- Excluded stray char-device untracked entries via .gitignore update
+- Executed ingest_frame.py: extract → detect → map → overlay → push pipeline
+- Frame 256 from 422_24.05.26.mp4 (vehicle detection, YOLO confidence 0.83)
+- CVAT task id=5 created and pushed with auto-labeled frame
+- Owner hand-corrected class: vehicle → military_vehicle in CVAT UI
+- cvat_pull.py verified pull: updated class, bbox coordinates preserved
+- Confirmed round-trip data integrity (Phase 0.3 + 0.4 seamless)
+- Identified YOLO11n limitation: poor detection of small high-altitude drone objects (false positives: bird/train/clock on HUD)
 
 ## Next
-Phase 1.1: hand-label a frozen golden/val set (~100–150 frames spanning easy classes: vehicle, military_vehicle, structure) from scratch in CVAT—freeze into immutable `golden/` dir, never mixed into auto-labeled train pool.
+Custom military-model training or first fine-tune cycle on golden set (23 frames insufficient; need to grow); keep golden set and auto-labeled train pool separate.
 
 ## Blockers
 None.
@@ -26,8 +26,11 @@ None.
 - Drone FC for GPS logs? (Betaflight / ArduPilot / other)
 - Target detection classes for fine-tuned model?
 - Deploy: VPS or Beelink + tunnel?
+- How many frames needed for golden set to train robust military-vehicle classifier?
 
 ## Reminders
+- YOLO11n (COCO nano) struggles with small objects at drone altitude → confirms need for custom model with SPEC
+- Test artifacts (task id=5, data/labeling/labels_test1) are separate from golden/ and production train pool
 - `.env` must contain `ANTHROPIC_API_KEY`, `BOT_TOKEN`, `DETECTOR_URL`, `TG_API_ID`, `TG_API_HASH`
 - `mcp/` shadows PyPI `mcp` — always use importlib outside mcp/
 - Bot fallback: Claude fails → plain summary, never crashes
@@ -40,6 +43,7 @@ None.
 - CVAT category_id offset: +1 only on cvat_push.py path; taxonomy.yaml (0-5) and coco_export.py untouched
 - .env now properly gitignored; git history contains secrets (filter-repo cleanup deferred as owner's decision)
 - direnv now set up (.envrc); user can load .env into interactive shell without Claude reading it
+- Sandbox fix: uvicorn run via '&'+disown was dying with bash session; resolved with Bash run_in_background:true
 
 ## How to resume
 ```bash
@@ -52,6 +56,9 @@ venv/bin/python3 main.py
 
 # Frame extraction (if needed)
 venv/bin/python cv_toolkit/frame_extractor.py --input <video_path> --output <frames_dir>
+
+# CVAT ingestion (Phase 0.3/0.4)
+venv/bin/python cv_toolkit/labeling/ingest_frame.py --frame <path> --task-id <id>
 
 # Tests
 venv/bin/pytest tests/ -v                       # 27+ tests (detector on :8000)
