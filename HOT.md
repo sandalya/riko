@@ -5,17 +5,17 @@ updated: 2026-07-13
 # HOT
 
 ## Now
-Reorganized golden round-1 raw frames into batch_001/ subdirectory (22 files, 100% rename detected by git); verified no code hardcodes the old path and committed the change to main.
+Created CVAT task golden-v0-round2 (id=6) from batch_002 (72 frames); owner hand-labeled pidar and military_vehicle classes in CVAT UI; cvat_pull.py extracted annotations into data/golden/labels/. Combined golden set now 95 frames with 203 boxes (112 pidar + 91 military_vehicle).
 
 ## Last done
-- Moved data/golden/raw/*.png → data/golden/raw/batch_001/
-- Confirmed CVAT task stores server-side copies (no relinking needed)
-- Verified cvat_pull.py uses Path(name).name (filename only, not full path)
-- Staged as git renames and confirmed no history loss
-- Committed (dc41804) and pushed to main
+- Created batch_002 CVAT task (id=6, 72 frames, no pre-placed boxes)
+- Hand-labeled 64/72 frames with 2 classes (pidar, military_vehicle) in CVAT UI
+- Confirmed 8 frames as empty (no targets)
+- Exported batch_002 annotations via cvat_pull.py into data/golden/labels/
+- Merged with batch_001 round 1: total 95 frames, 203 boxes across 2 classes
 
 ## Next
-Continue growing the golden set beyond round 1 (currently 23 frames, 2 classes). Phase 1.1 (hand-label golden/val ~100–150 frames) is the active milestone; future batches will use batch_002, batch_003, etc. naming convention.
+Continue growing golden set toward Phase 1.1 target (~100–150 frames); once satisfied, freeze golden/val split and start first fine-tune cycle on custom military-vehicle model.
 
 ## Blockers
 None.
@@ -30,6 +30,8 @@ None.
 - YOLO11n (COCO nano) struggles with small objects at drone altitude → confirms need for custom model
 - Test artifacts (task id=5, data/labeling/labels_test1) are separate from golden/ and production train pool
 - Golden batches follow naming: batch_001/, batch_002/, etc. under data/golden/raw/
+- Round 1 (batch_001, 23 frames) + round 2 (batch_002, 72 frames) both live flat in data/golden/labels/ (unique vlcsnap timestamp filenames, no collisions)
+- CVAT tasks: id=4 round1, id=6 round2. Task id=5 remains a separate active-learning-loop test artifact.
 - `.env` must contain `ANTHROPIC_API_KEY`, `BOT_TOKEN`, `DETECTOR_URL`, `TG_API_ID`, `TG_API_HASH`
 - `mcp/` shadows PyPI `mcp` — always use importlib outside mcp/
 - Bot fallback: Claude fails → plain summary, never crashes
