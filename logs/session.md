@@ -106,3 +106,53 @@
 - Why: зафіксувати scraper module + duration fix перед тестом на реальних даних
 - Result: HOT/WARM оновлені; scraper ready; duration=0 пропускається
 - Next: додати TG_API_ID/TG_API_HASH в .env; запустити scraper; live test bot
+
+### [2026-06-28 16:56–19:56] Action: eval suite expansion — COCO + video regression
+- Why: покрити детектор регресійними тестами на реальних фікстурах, не тільки smoke-тестами
+- Result: 6 COCO val2017 parametrized тестів + 3 video parametrized тести (golden baselines завантажені); 28/28 тестів green
+- Next: scraper module для збору відео з TG-каналів
+
+### [2026-06-28 20:30–21:13] Action: scraper/ — TG video scraper, 5-stage filter pipeline
+- Why: автоматизований збір дрон-відео з TG-каналів для датасету
+- Result: config/client/downloader/filter/haiku_filter/main (6 файлів); фікс duration=0 (TG часто не віддає тривалість) → allow unknown; scraper готовий, не тестований на реальних даних
+- Next: taxonomy + frame extraction
+
+### [2026-06-28 21:35–21:46] Action: cv_toolkit — taxonomy v0 + frame_extractor
+- Why: зафіксувати номенклатуру класів і почати вирізати кадри з відео під лейблення
+- Result: taxonomy v0 locked (6 класів, ID 0-5 frozen); frame_extractor.py (interval + scene-change modes); 916 кадрів з 6 FPV відео
+- Next: custom labeling UI (backlog) або готове рішення (CVAT)
+
+### [2026-06-30 23:34–23:52] Action: workspace Pi5→Beelink SER5 migration audit
+- Why: аудит SPEC_v001.md під час міграції воркспейсу — перевірити, чи Pi5-референси це застаріла інфра чи навмисний архітектурний вибір
+- Result: Pi5-референси в SPEC — це design intent для edge-інференсу (окремо від dev-server), залишено без змін; .gitignore розширено (виключено великі data-асети: scraper videos, raw frames, model weights)
+- Next: English thinking language migration
+
+### [2026-07-01 00:23] Action: English thinking language migration
+- Why: розділити мову міркування (English, дешевші токени) і мову відповіді користувачу (українська)
+- Result: PROMPT.md перекладено, CLAUDE.md Rule 1 оновлено з явним принципом
+- Next: model update claude-sonnet-4-6 → claude-sonnet-5
+
+### [2026-07-01 12:35] Action: model update to claude-sonnet-5
+- Why: перейти на актуальну модель у agent/main.py та bot/client.py
+- Result: обидва файли оновлені на claude-sonnet-5
+- Next: Phase 0.1 — CVAT self-hosted install
+
+### [2026-07-01 23:15–23:25] Action: Phase 0.1 — CVAT self-hosted install
+- Why: потрібен labeling seam для active-learning loop (auto-label → human review → retrain)
+- Result: CVAT встановлено (docker, core-only — без ClickHouse/Vector/Grafana), порт 8081, проєкт drone-recon з 6 замороженими taxonomy-лейблами, перевірено через REST API
+- Next: Phase 0.2 — auto-labeler → COCO exporter
+
+### [2026-07-06 20:26] Action: Phase 0.2 — cv_toolkit/labeling/coco_export.py
+- Why: конвертувати сирий вивід auto-labeler'а (prompt-derived label + confidence + bbox) у taxonomy-mapped COCO JSON
+- Result: інвертує cv_toolkit/configs/grounding_dino.yaml (phrase → class name) замість окремого mapping-файлу; unmatched labels dropped+logged; xyxy→xywh конверсія; 5-frame фікстура + 6 unit-тестів; PyYAML додано в requirements.txt; 25/25 non-detector тестів green
+- Next: Phase 0.3+0.4 — CVAT push/pull
+
+### [2026-07-06 22:04–22:05] Action: Phase 0.3+0.4 — cvat_push.py + cvat_pull.py; security fix .env
+- Why: замкнути labeling seam end-to-end (push кадрів+анотацій у CVAT, pull назад після ручної корекції)
+- Result: cvat_push.py (створення task, upload frames+COCO через cvat-sdk) і cvat_pull.py (export у Ultralytics YOLO формат) готові; знайдено і виправлено баг — CVAT відхиляє category_id=0 → shift_category_ids() з +1 офсетом тільки на upload-шляху (taxonomy.yaml 0-5 не чіпали); повний round-trip smoke test на реальному TG-відео (task id=3) пройдений; окремо знайдено і виправлено security-issue — .env був закомічений у git з початку проєкту (2 коміти), untracked + доданий у .gitignore (commit c606300) до цього чекпоінту; git-історія все ще містить секрети (filter-repo cleanup відкладено як рішення власника)
+- Next: Phase 1.1 — hand-label golden/val set (~100-150 кадрів), заморозити окремо від auto-labeled train pool
+
+### [2026-07-12] Action: backfill session.md (retroactive) + requirements.txt reconciliation
+- Why: session.md не оновлювався з 2026-06-28, хоча HOT.md/WARM.md і git log фіксували роботу до 2026-07-06 включно (порушення append-only логування з CLAUDE.md); requirements.txt мав лише 4 пакети (>=), хоча в коді реально імпортується ~18 third-party залежностей
+- Result: записи вище відновлені з git log (реальні дати/повідомлення комітів, не вигадані); requirements.txt переписаний на основі grep імпортів по коду + `venv/bin/pip freeze` (точні версії з робочого venv)
+- Next: розглянути незакомічену роботу (bot/client.py CVAT push flow з боту, cv_toolkit/pipeline/ingest_frame.py, data/labeling/) — перевірити тестами і зачекпоїнтити; Phase 1.1 залишається офіційним наступним кроком за SPEC
