@@ -1,5 +1,6 @@
 .env
 .direnv/
+.claude/settings.local.json
 logs/*.log
 data/input/
 data/output/

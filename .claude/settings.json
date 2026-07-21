@@ -3,6 +3,10 @@
   "permissions": {
     "allow": [
       "Bash(pytest *)",
+      "Bash(python -m pytest *)",
+      "Bash(pip install -r requirements*.txt)",
+      "Bash(ruff check *)",
+      "Bash(mypy *)",
       "Bash(git diff *)",
       "Bash(git log *)",
       "Bash(git status)",
@@ -10,19 +14,39 @@
       "Bash(rsync --checksum *)"
     ],
     "ask": [
+      "Bash(pip install *)",
       "Bash(git push *)"
     ],
     "deny": [
+      "Bash(python -c *)",
+      "Read(.env)",
+      "Read(**/.env)",
+      "Read(**/*secret*)",
       "Read(**/*.session)",
       "Read(**/credentials.json)",
       "Read(**/*.pem)",
-      "Bash(rm -rf *)"
+      "Read(**/id_ed25519)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force)",
+      "Bash(git push --force *)",
+      "Bash(sudo *)"
     ]
   },
   "sandbox": {
+    "enabled": false,
     "filesystem": {
-      "denyRead": ["~/.aws/credentials", "~/.config/gcloud"]
-    }
+      "denyRead": ["~/.ssh", "~/.aws/credentials", "~/.config/gcloud", "**/.env"]
+    },
+   "network": {
+    "allowedDomains": [
+      "api.anthropic.com",
+      "github.com",
+      "registry.npmjs.org",
+      "pypi.org",
+      "files.pythonhosted.org",
+      "api.telegram.org"
+    ]
+  }  
   },
   "worktree": {
     "symlinkDirectories": ["venv", ".cache"]
