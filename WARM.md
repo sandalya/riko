@@ -170,3 +170,28 @@ Host-side systemd --user service providing git push broker for sandboxed agent w
 - Unknown repo_id allowlist rejection works
 
 **Next**: Monitor in practice once sandbox.enabled flipped on with network isolation. Add trudovik repo_id to config when needed.
+
+## Checkpoint finalization broker (chkp-sumd)
+
+```yaml
+last_touched: 2026-07-22
+tags: [sandbox, checkpoint, broker, finalization]
+status: active — systemd --user service enabled+running, live verified
+```
+
+Host-side systemd --user service providing checkpoint finalization (Anthropic API call + warm_ops + backlog + git commit/push) for sandboxed agent when direct access to ANTHROPIC_API_KEY is blocked.
+
+**Files** (meta/chkp/):
+- `chkp-sumd.py` — unix socket listener, receives pre-flight request, runs run_checkpoint_finalize() with CHKP_ANTHROPIC_KEY, returns status
+- `chkp_sum_client.py` — in-agent client, request_finalize(checkpoint_data) → POST to sumd socket
+- `chkp-sumd.config.json` — (future: security/validation rules)
+- `chkp-sumd.service` — systemd unit
+- `~/.config/chkp/sumd.env` — CHKP_ANTHROPIC_KEY (separate from .env, not in git)
+
+**Integration**:
+- `chkp.py do_checkpoint()` now: (1) runs secret-free pre-flight (read HOT/WARM/COLD, parse input), (2) hands off via unix socket to chkp-sumd
+- `run_checkpoint_finalize()` extracted from old do_checkpoint, reused in both places
+
+**Verified**:
+- Mock round-trip socket handshake works
+- Live run: checkpoint finalized, warm_ops applied, commit pushed to origin

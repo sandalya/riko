@@ -1,22 +1,22 @@
 ---
 project: drone-recon
-updated: 2026-07-21
+updated: 2026-07-22
 ---
 # HOT
 
 ## Now
-Built chkp-pushd: host-side systemd --user git push broker (unix socket, allowlist+pinned-url+ff-only) as fallback when sandboxed git push is blocked. Wired chkp.py git_commit_push() to fall back to chkp_push_client.request_push(); added sandbox filesystem allow + allowAllUnixSockets to .claude/settings.json.
+Built chkp-sumd: host-side systemd broker that allows checkpoint finalization (Anthropic call + apply_warm_ops + backlog + commit/push) to run outside the sandbox, enabling access to ANTHROPIC_API_KEY. Verified with mock round-trip and one live run.
 
 ## Last done
-- Implemented chkp-pushd.py systemd --user service (unix socket broker for git push)
-- Created chkp_push_client.py with fallback request logic (pinned URL, ff-only, allowlist)
-- Configured chkp-pushd.config.json with drone-recon repo entry
-- Added sandbox filesystem allow + allowAllUnixSockets to .claude/settings.json
-- Verified broker with --test flag, in-session client call, and allowlist rejection
-- Integrated fallback into chkp.py git_commit_push()
+- Extracted run_checkpoint_finalize() from old do_checkpoint() into reusable module
+- Implemented chkp-sumd.py as unix socket listener with secret-free validation
+- Updated chkp.py do_checkpoint() to hand off via socket after pre-flight checks
+- Added CHKP_ANTHROPIC_KEY to dedicated sumd.env file
+- Wired client-side request via chkp_sum_client.py
+- Verified mock and live round-trip; broker validated and executed checkpoint
 
 ## Next
-Monitor broker in practice once sandbox.enabled is flipped back on with network isolation. Add trudovik repo entry to chkp-pushd.config.json when needed.
+Confirm the live chkp run committed and pushed correctly to origin. Decide whether to push meta repo commit (65c86da).
 
 ## Blockers
 None.
@@ -26,9 +26,10 @@ None.
 - Is there an existing CVAT MCP package to restore, or was the dangling .mcp.json a local experiment?
 
 ## Reminders
-- chkp-pushd files in meta/chkp/ (chkp-pushd.py, chkp_push_client.py, chkp-pushd.config.json, repo_id=drone-recon only)
-- systemd --user service enabled+running, linger already on
-- YOLO11n (COCO nano) auto-labeling: only 5/40 frames initially had detector-mapped boxes, but manual review showed auto frame *selection* (confidence ranking) works better than raw box *quality* for this domain — most frames legitimately needed added boxes (military_vehicle class unknown to base model)
+- chkp-sumd files in meta/chkp/: chkp-sumd.py, chkp_sum_client.py, chkp-sumd.config.json, chkp-sumd.service, dedicated ~/.config/chkp/sumd.env
+- systemd --user service (sumd) enabled+running, linger already on
+- chkp-pushd.py (git push broker) also systemd --user, separate from sumd
+- YOLO11n (COCO nano) auto-labeling: only 5/40 frames initially had detector-mapped boxes, but manual review showed auto frame *selection* (confidence ranking) works better than raw box *quality* — most frames legitimately needed added boxes (military_vehicle class unknown to base model)
 - YOLO11n struggles with small objects at drone altitude → confirms need for custom model fine-tune
 - Data architecture: golden/labels/ stays flat (unique vlcsnap/video-stem filenames, no collisions); provenance.json is source of truth for batch origin, not directory structure
 - Golden batches: batch_001/ (23 frames, manual), batch_002/ (72 frames, manual), batch_003/ (11 frames, auto-reviewed). Combined: 106 frames, 214 boxes
