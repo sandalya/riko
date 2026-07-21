@@ -5,21 +5,18 @@ updated: 2026-07-21
 # HOT
 
 ## Now
-Built production-ready Claude Code config for module-3 homework (Path A). Closed security levels 1–3: permissions deny (sudo, git push --force), sandbox filesystem denyRead (~/.ssh, ~/.aws/credentials, ~/.config/gcloud, **/.env), and network allowedDomains (anthropic, github, npm, pypi, telegram). Diagnosed and fixed a Claude Code sandbox regression (nested userns/CAP_SYS_ADMIN crash on latest channel 2.1.216) by pinning to stable 2.1.206. Untracked .claude/settings.local.json and added to .gitignore. Verified CVAT (non-MCP) workflow still works end-to-end via cvat_pull.py against task id=7.
+Built chkp-pushd: host-side systemd --user git push broker (unix socket, allowlist+pinned-url+ff-only) as fallback when sandboxed git push is blocked. Wired chkp.py git_commit_push() to fall back to chkp_push_client.request_push(); added sandbox filesystem allow + allowAllUnixSockets to .claude/settings.json.
 
 ## Last done
-- Configured Claude Code sandbox with strict permissions (deny: sudo, git push --force; filesystem denyRead: ~/.ssh, ~/.aws/credentials, ~/.config/gcloud, **/.env)
-- Set network allowedDomains to anthropic, github, npm, pypi, telegram
-- Tested sandbox filesystem restrictions (child bash process got Permission denied on .env)
-- Identified real Claude Code bug: latest channel (2.1.216) broke all bash execution due to nested userns/CAP_SYS_ADMIN crash
-- Fixed by pinning Claude Code to stable version 2.1.206 in user settings.json
-- Removed dangling .mcp.json reference (enabledMcpjsonServers:"cvat") from settings.local.json
-- Untracked .claude/settings.local.json from git (git rm --cached) and added to .gitignore
-- Verified CVAT non-MCP workflow: cvat_pull.py successfully pulled 11 labels from task id=7
-- Drafted homework submission: project description, level breakdown (1–3 closed, 4 intentionally skipped), key security decisions
+- Implemented chkp-pushd.py systemd --user service (unix socket broker for git push)
+- Created chkp_push_client.py with fallback request logic (pinned URL, ff-only, allowlist)
+- Configured chkp-pushd.config.json with drone-recon repo entry
+- Added sandbox filesystem allow + allowAllUnixSockets to .claude/settings.json
+- Verified broker with --test flag, in-session client call, and allowlist rejection
+- Integrated fallback into chkp.py git_commit_push()
 
 ## Next
-Optionally restore CVAT MCP server (.mcp.json, tracked in BACKLOG.md) — find/install an actual CVAT MCP package before recreating the config. Decide final sandbox.enabled value to ship in homework submission (true documents intent but doesn't run locally due to host nested-userns limitation; false is the actually-working state). Then resume eval pipeline: decide IoU threshold + false-positive scoring, implement freeze_eval_set.py / auto_ingest guard / run_eval.py.
+Monitor broker in practice once sandbox.enabled is flipped back on with network isolation. Add trudovik repo entry to chkp-pushd.config.json when needed.
 
 ## Blockers
 None.
@@ -29,6 +26,8 @@ None.
 - Is there an existing CVAT MCP package to restore, or was the dangling .mcp.json a local experiment?
 
 ## Reminders
+- chkp-pushd files in meta/chkp/ (chkp-pushd.py, chkp_push_client.py, chkp-pushd.config.json, repo_id=drone-recon only)
+- systemd --user service enabled+running, linger already on
 - YOLO11n (COCO nano) auto-labeling: only 5/40 frames initially had detector-mapped boxes, but manual review showed auto frame *selection* (confidence ranking) works better than raw box *quality* for this domain — most frames legitimately needed added boxes (military_vehicle class unknown to base model)
 - YOLO11n struggles with small objects at drone altitude → confirms need for custom model fine-tune
 - Data architecture: golden/labels/ stays flat (unique vlcsnap/video-stem filenames, no collisions); provenance.json is source of truth for batch origin, not directory structure

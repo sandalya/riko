@@ -143,3 +143,30 @@ Framework for dataset curation and annotation:
 - YOLO11n (COCO nano) limitation identified: poor detection of small high-altitude drone objects; false positives observed (bird/train/clock on HUD). Confirms need for custom military-vehicle model fine-tune cycle on golden set.
 
 CVAT infra (gitignored): `infra/cvat-server/` (vendored clone), `CVAT_HOST=192.168.72.191:8081` in `.env`
+
+## Git push broker (chkp-pushd)
+
+```yaml
+last_touched: 2026-07-21
+tags: [sandbox, git, broker, fallback]
+status: active — systemd --user service enabled+running, fallback integration wired
+```
+
+Host-side systemd --user service providing git push broker for sandboxed agent when direct push is blocked.
+
+**Files** (meta/chkp/):
+- `chkp-pushd.py` — unix socket listener, validates allowlist + pinned URL + ff-only
+- `chkp_push_client.py` — in-agent client, request_push(repo_id, ref) → POST to broker socket
+- `chkp-pushd.config.json` — allowlist (drone-recon repo_id=0)
+- systemd service file (installed locally, not in git)
+
+**Integration**:
+- `chkp.py git_commit_push()` now falls back to broker if direct push blocked
+- `.claude/settings.json` added: `allowFileSystemAccess: [meta/chkp/, ...]` + `allowAllUnixSockets: true`
+
+**Verified**:
+- `chkp-pushd.py --test` passes
+- In-session client.request_push(0, "main") succeeds
+- Unknown repo_id allowlist rejection works
+
+**Next**: Monitor in practice once sandbox.enabled flipped on with network isolation. Add trudovik repo_id to config when needed.
